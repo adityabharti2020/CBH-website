@@ -8,10 +8,9 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import AddAmmenityInput from "./AddAmmenityInput";
-import AddAmmenitySlots from "./AddAmmenitySlots";
 
-const AddAmmenity = () => {
+
+const AmmenityRequest = () => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -29,7 +28,7 @@ const AddAmmenity = () => {
         <Grid container spacing={3}>
           <Grid item style={{ marginTop: "0.8rem", color: "#9f2936" }}>
             <Typography variant="h4" component="h2">
-              Amenities Management
+              Booking Requests
             </Typography>
           </Grid>
         </Grid>
@@ -42,7 +41,7 @@ const AddAmmenity = () => {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="Create Amenities" {...a11yProps(0)} />
+              <Tab label="Booking Requests" {...a11yProps(0)} />
               {/* <Tab label="Create Ammenity Slot" {...a11yProps(1)} /> */}
             </Tabs>
           </Box>
@@ -54,7 +53,7 @@ const AddAmmenity = () => {
           >
             {value === 0 && (
               <Box sx={{ p: 3 }}>
-                <AddAmmenityInput />
+                AmmenityRequest
               </Box>
             )}
           </div>
@@ -76,4 +75,5 @@ const AddAmmenity = () => {
   );
 };
 
-export default AddAmmenity;
+export default AmmenityRequest;
+

@@ -16,6 +16,7 @@ import FloorCreation from "./components/adminSection/FloorManagement/FloorCreati
 import ShopCreate from "./components/adminSection/ShopManagement/ShopCreate";
 import UserForm from "./components/adminSection/CreateUser/UserForm";
 import AddAmmenity from "./components/adminSection/AmmenityManagement/AddAmmenity";
+import AmmenityRequest from './components/adminSection/AmmenityRequest/AmmenityRequest'
 import AddAmmenitySlots from "./components/adminSection/AmmenityManagement/AddAmmenitySlots";
 import MaintenanceRequestHome from "./components/adminSection/MaintenaceRequests/MaintenanceRequestHome";
 
@@ -55,6 +56,10 @@ export default function Router() {
         {
           path: "/dashboard/maintenance",
           element: <MaintenanceRequestHome />,
+        },
+        {
+          path: "/dashboard/requests",
+          element: <AmmenityRequest />,
         },
       ],
     },

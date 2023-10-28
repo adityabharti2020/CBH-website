@@ -43,7 +43,7 @@ const navConfig = [
   //   icon: icon("ic_createUser"),
   // },
   {
-    title: "ammenities",
+    title: "amenities",
     path: "/dashboard/createAmmenities",
     icon: icon("ic_createUser"),
   },
@@ -51,6 +51,11 @@ const navConfig = [
     title: "maintenance requests",
     path: "/dashboard/maintenance",
     icon: icon("ic_maintenance"),
+  },
+  {
+    title: "booking requests",
+    path: "/dashboard/requests",
+    icon: icon("ic_request"),
   },
   // {
   //   title: "Ammenity Slots",

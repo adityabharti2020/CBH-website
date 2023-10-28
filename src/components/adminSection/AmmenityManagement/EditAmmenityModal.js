@@ -9,20 +9,26 @@ import {
 import React from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 
-const EditAmmenityModal = ({ open, handleClose, data,updateData,setupdateData, handleAction }) => {
+const EditAmmenityModal = ({
+  open,
+  handleClose,
+  data,
+  updateData,
+  setupdateData,
+  handleAction,
+}) => {
   // console.log(data);
   const updateSubmitHandler = (e) => {
-       e.preventDefault();
-       console.log("in")
-  }
-  const updateInputChange = (e) =>{
+    e.preventDefault();
+    //  console.log("in")
+  };
+  const updateInputChange = (e) => {
     const { name, value } = e.target;
     setupdateData((updateData) => ({
       ...updateData,
       [name]: value,
     }));
-
-  }
+  };
   return (
     <Modal
       open={open}
@@ -46,66 +52,62 @@ const EditAmmenityModal = ({ open, handleClose, data,updateData,setupdateData, h
       >
         <Stack>
           <Typography variant="h5" color={"#9f2936"}>
-            Update Ammenities
+            Update Amenities
           </Typography>
         </Stack>
         <form onSubmit={updateSubmitHandler}>
-        <Stack mt={2} spacing={2}>
-          <TextField
-            required
-            id="outlined-required"
-            label="Ammenity Name"
-            defaultValue={data?.amenityName}
-            type="string"
-            disabled
-            focused
-            
-            name="amenityName"
-            fullWidth
-            size="small"
-          />
-          <TextField
-            required
-            id="outlined-required"
-            type="number"
-            defaultValue={data?.basePrice
-            }
-
-            name="newBasePrice"
-            label="Base Price"
-            size="small"
-            onChange={(e) => updateInputChange(e)}
-          />
-          <TextField
-            id="outlined-adornment-amount"
-            type="number"
-            defaultValue={data?.GST}
-            name="newGST"
-            label="GST"
-            size="small"
-            InputProps={{
-              endAdornment: <InputAdornment position="end">%</InputAdornment>,
-            }}
-            onChange={(e) => updateInputChange(e)}
-
-          />
-        </Stack>
-        <Button
-        type="submit"
-          variant="contained"
-          onClick={handleAction}
-          sx={{ mt: 2, marginRight: "1rem" }}
-        >
-          Update
-        </Button>
-        <Button
-          variant="contained"
-          color="warning"
-          onClick={handleClose}
-          sx={{ mt: 2, marginRight: "1rem" }}
-        >
-          Close
-        </Button>
+          <Stack mt={2} spacing={2}>
+            <TextField
+              required
+              id="outlined-required"
+              label="Amenity Name"
+              defaultValue={data?.amenityName}
+              type="string"
+              disabled
+              focused
+              name="amenityName"
+              fullWidth
+              size="small"
+            />
+            <TextField
+              required
+              id="outlined-required"
+              type="number"
+              defaultValue={data?.basePrice}
+              name="newBasePrice"
+              label="Base Price"
+              size="small"
+              onChange={(e) => updateInputChange(e)}
+            />
+            <TextField
+              id="outlined-adornment-amount"
+              type="number"
+              defaultValue={data?.GST}
+              name="newGST"
+              label="GST"
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              }}
+              onChange={(e) => updateInputChange(e)}
+            />
+          </Stack>
+          <Button
+            type="submit"
+            variant="contained"
+            onClick={handleAction}
+            sx={{ mt: 2, marginRight: "1rem" }}
+          >
+            Update
+          </Button>
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={handleClose}
+            sx={{ mt: 2, marginRight: "1rem" }}
+          >
+            Close
+          </Button>
         </form>
       </Box>
     </Modal>
