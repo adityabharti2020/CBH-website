@@ -16,7 +16,9 @@ import FloorCreation from "./components/adminSection/FloorManagement/FloorCreati
 import ShopCreate from "./components/adminSection/ShopManagement/ShopCreate";
 import UserForm from "./components/adminSection/CreateUser/UserForm";
 import AddAmmenity from "./components/adminSection/AmmenityManagement/AddAmmenity";
-import AmmenityRequest from './components/adminSection/AmmenityRequest/AmmenityRequest'
+import BookingRequestHome from './components/adminSection/AmmenityRequest/AmmenityRequestHome'
+import ConfirmRequested from './components/adminSection/AmmenityRequest/ConfirmRequested'
+import RejectRequest from './components/adminSection/AmmenityRequest/RejectRequest'
 import AddAmmenitySlots from "./components/adminSection/AmmenityManagement/AddAmmenitySlots";
 import MaintenanceRequestHome from "./components/adminSection/MaintenaceRequests/MaintenanceRequestHome";
 
@@ -59,8 +61,16 @@ export default function Router() {
         },
         {
           path: "/dashboard/requests",
-          element: <AmmenityRequest />,
+          element: <BookingRequestHome />,
         },
+        // {
+        //   path: "/dashboard/confirmRequests",
+        //   element: <ConfirmRequested />,
+        // },
+        // {
+        //   path: "/dashboard/rejectRequests",
+        //   element: <RejectRequest />,
+        // },
       ],
     },
     {

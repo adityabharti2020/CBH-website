@@ -184,8 +184,8 @@ const AddAmmenityInput = () => {
         <Grid container rowGap={1} columnGap={1}>
           {inputFields?.map((inputField, index) => (
             <Grid
-              key={`${inputField}-${index}`}
-              // key={index}
+              // key={`${inputField}-${index}`}
+              key={index}
               item
               container
               rowGap={1}

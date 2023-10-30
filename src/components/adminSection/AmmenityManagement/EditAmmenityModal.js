@@ -22,6 +22,7 @@ const EditAmmenityModal = ({
     e.preventDefault();
     //  console.log("in")
   };
+ 
   const updateInputChange = (e) => {
     const { name, value } = e.target;
     setupdateData((updateData) => ({
