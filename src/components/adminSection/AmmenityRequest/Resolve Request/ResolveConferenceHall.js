@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React from "react";
 import {
   Grid,
   Stack,
@@ -10,87 +10,32 @@ import {
   ListItemIcon,
   ListItemAvatar,
   ListItemText,
-  Box,
-  Button,
+  
 } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import dayjs from "dayjs";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-// const AcceptAlert = React.forwardRef(function Alert(props, ref){
-//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-// });
-// const RejecttAlert = React.forwardRef(function Alert(props, ref) {
-//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-// });
-
-const ConferenceHall = ({
-  cardData,
-  index,
-  handleOpenModal,
-  bookingRequest,
-}) => {
-  // console.log(cardData);
-  const navigate = useNavigate();
-  const [accept, setAccept] = useState(false);
-  const [reject, setReject] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const AccepthandleClose = () => {
-    setAccept(false);
-    setSuccess(true);
-  };
-  const RejecthandleClose = () => {
-    setReject(false);
-    setSuccess(false);
-  };
+const ResolveConferenceHall = ({ cardData, index }) => {
+  console.log(cardData);
   const date = dayjs(cardData.dateForConferenceHall);
   const formattedDate = date.format("DD-MM-YYYY");
 
   const Createddate = dayjs(cardData.createdAt);
   const CreateddateFormatted = Createddate.format("DD-MM-YYYY");
-  //   console.log(formattedDate);
+
+  const UpdatedDate = dayjs(cardData?.updatedAt);
+  const UpdateformattedDate = UpdatedDate.format("DD-MM-YYYY");
+
   const SlotStartTimeFormater = (starttime) => {
     const currentTime = dayjs(starttime);
-    // const formattedTime = currentTime.format('HH:mm:ss');
     const formattedStartTime = currentTime.format("h:mm A");
-    // console.log(formattedStartTime);
     return formattedStartTime;
   };
   const SlotEndTimeFormater = (endTime) => {
     const currentTime = dayjs(endTime);
-    // const formattedTime = currentTime.format('HH:mm:ss');
     const formattedEndTime = currentTime.format("h:mm A");
-    // console.log(formattedEndTime);
     return formattedEndTime;
-  };
-  const statusAcceptHandler = async () => {
-    setAccept(true);
-    console.log("inside status");
-    try {
-      const response = await axios.put("/api/v1/admin/update/booking/status", {
-        bookingId: cardData._id,
-        orderBookingStatus: "accepted",
-      });
-      bookingRequest();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const statusRejectHandler = async () => {
-    setAccept(true);
-    try {
-      const response = await axios.put("/api/v1/admin/update/booking/status", {
-        bookingId: cardData._id,
-        orderBookingStatus: "rejected",
-      });
-      bookingRequest();
-    } catch (error) {
-      console.log(error);
-    }
   };
   return (
     <>
@@ -122,11 +67,11 @@ const ConferenceHall = ({
           <Chip
             label={`${cardData?.Amenity.amenityName}  ${cardData?.bookingStatus}`}
             color={
-              cardData?.bookingStatus === "pending"
-                ? "warning"
-                : cardData?.bookingStatus === "accepted"
+              cardData?.bookingStatus === "accepted"
                 ? "success"
-                : "error"
+                : cardData?.bookingStatus === "rejected"
+                ? "warning"
+                : "info"
             }
           />
         </Stack>
@@ -176,6 +121,14 @@ const ConferenceHall = ({
               <ListItemText
                 primary="Booking Generated On"
                 secondary={CreateddateFormatted}
+              />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText
+                primary="Booking Updated On"
+                secondary={UpdateformattedDate}
               />
             </ListItem>
           </List>
@@ -255,8 +208,12 @@ const ConferenceHall = ({
           </List>
         </Stack>
         <Stack
+          // spacing={1}
+          rowGap={1}
+          // columnGap={2}
           sx={{
-            display: "flex",
+            maxWidth: "450px",
+
             justifyContent: "space-between",
             flexDirection: {
               xs: "column",
@@ -265,9 +222,10 @@ const ConferenceHall = ({
             },
             overflow: "hidden",
             width: "100%",
-            "& hover": {
-              overflowX: "scroll",
-            },
+            // "& hover": {
+            //   overflowX: "scroll",
+            // },
+
             flexWrap: "wrap",
           }}
         >
@@ -293,66 +251,10 @@ const ConferenceHall = ({
             );
           })}
         </Stack>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "auto",
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              bgcolor: "green",
-              marginX: "15px",
-              "&:hover": { bgcolor: "green" },
-            }}
-            onClick={statusAcceptHandler}
-          >
-            Accept
-          </Button>
-          {/* <Snackbar
-              open={accept}
-              autoHideDuration={3000}
-              onClose={AccepthandleClose}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <AcceptAlert
-                onClose={AccepthandleClose}
-                severity="success"
-                sx={{ width: "100%" }}
-              >
-                Booking Accepted!
-              </AcceptAlert>
-            </Snackbar> */}
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "red", "&:hover": { bgcolor: "red" } }}
-            onClick={statusRejectHandler}
-          >
-            Reject
-          </Button>
-          {/* <Snackbar
-              open={reject}
-              autoHideDuration={3000}
-              onClose={RejecthandleClose}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <RejecttAlert
-                onClose={RejecthandleClose}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Booking Canceled!
-              </RejecttAlert>
-            </Snackbar> */}
-        </Box>
       </Grid>
     </>
   );
 };
+ResolveConferenceHall.propTypes = { cardData: [] };
 
-ConferenceHall.propTypes = { cardData: [] };
-export default ConferenceHall;
+export default ResolveConferenceHall;

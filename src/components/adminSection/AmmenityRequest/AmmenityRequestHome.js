@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import BookingRequest from './BookingRequest'
 import ConfirmRequested from './ConfirmRequested'
 import RejectRequest from './RejectRequest'
+import ResolvedRequest from './ResolvedRequest'
 
 const AmmenityRequest = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const AmmenityRequest = () => {
           alignItems={"center"}
         >
           <Typography color="#9f2936" variant="h4" component="h2">
-            Maintenace Requests
+            Booking Requests
           </Typography>
           <Stack
             direction={"row"}
@@ -60,10 +61,13 @@ const AmmenityRequest = () => {
                 value={value}
                 onChange={handleChange}
                 aria-label="basic tabs example"
+                variant="scrollable"
+                scrollButtons="auto"
               >
-                <Tab label="Booking Requests" {...a11yProps(0)} />
-                <Tab label="Confirmed Requests" {...a11yProps(1)} />
-                <Tab label="Rejected Requests" {...a11yProps(2)} />
+                <Tab label="Pending" {...a11yProps(0)} />
+                <Tab label="Accepted" {...a11yProps(1)} />
+                <Tab label="Rejected" {...a11yProps(2)} />
+                <Tab label="Past Bookings" {...a11yProps(3)} />
               </Tabs>
             </Box>
             <div
@@ -76,7 +80,7 @@ const AmmenityRequest = () => {
                 <Box sx={{ p: 3 }}>
                   {/* /api/v1/admin/get/all/maintenance/requests */}
                   <BookingRequest
-                    title={"Booking Requests"}
+                    title={"Pending Requests"}
                     type={"new"}
                   />
                 </Box>
@@ -105,6 +109,20 @@ const AmmenityRequest = () => {
               {value === 2 && (
                 <Box sx={{ p: 3 }}>
                   <RejectRequest
+                  title={"Reject Requests"}
+                  type={"new"}/>
+                </Box>
+              )}
+            </div>
+            <div
+              role="tabpanel"
+              hidden={value !== 3}
+              id={`simple-tabpanel-${2}`}
+              aria-labelledby={`simple-tab-${2}`}
+            >
+              {value === 3 && (
+                <Box sx={{ p: 3 }}>
+                  <ResolvedRequest
                   title={"Reject Requests"}
                   type={"new"}/>
                 </Box>

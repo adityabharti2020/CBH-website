@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
-import {  Grid, Stack, Typography, Chip, Box } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { isLoading } from "../../../redux/action/defaultActions";
-import AcceptConferenceHall from "./Accept Requests/AcceptConferenceHall";
-import AcceptAdverTisingBoard from "./Accept Requests/AcceptAdverTisingBoard";
+import ResolveConferenceHall from "./Resolve Request/ResolveConferenceHall";
+import ResolveAdverTisingBoard from './Resolve Request/ResolveAdverTisingBoard'
 
-const ConfirmRequested = () => {
+const ResolvedRequest = () => {
   const dispatch = useDispatch();
-  const [activeRequestData, setActiveRequestData] = useState(null);
-  const [openScheduleMeetModal, setOpenScheduleMeetModal] = useState(false);
-  const [confirmReq, setConfirmReq] = useState();
 
-  const BookingConfirmReq = async () => {
+  const [resolve, setResolve] = useState();
+
+  const resolveRequest = async () => {
     dispatch(isLoading(true));
 
     try {
-      const response = await axios.get(
-        "/api/v1/admin/get/all/bookings/as/per/status?bookingStatus=accepted"
-      );
-      // console.log(response)
-      setConfirmReq(response?.data.bookings);
+      const response = await axios.get("/api/v1/admin/get/all/past/bookings");
+      console.log(response);
+      setResolve(response?.data.bookings);
       dispatch(isLoading(false));
     } catch (error) {
       console.log(error);
@@ -28,19 +25,17 @@ const ConfirmRequested = () => {
     }
   };
   useEffect(() => {
-    BookingConfirmReq();
+    resolveRequest();
   }, []);
   useEffect(() => {
-    if (confirmReq) {
-      console.log(confirmReq);
+    if (resolve) {
+      //  console.log(resolve)
     }
-  }, [confirmReq]);
- 
-  
+  }, [resolve]);
   return (
     <>
       <Typography color="#9f2936" variant="h4" component="h2">
-        Accepted Request
+        Past Bookings
       </Typography>
       <Grid
         container
@@ -51,15 +46,15 @@ const ConfirmRequested = () => {
         sx={{ mt: "20px" }}
         // bgcolor={"red"}
       >
-        {confirmReq?.map((request, index) => {
+        {resolve?.map((request, index) => {
           return request?.Amenity?.amenityName === "Conference Room" ? (
-            <AcceptConferenceHall
+            <ResolveConferenceHall
               cardData={request}
               key={request._id}
               index={index}
             />
           ) :
-            (<AcceptAdverTisingBoard
+            (<ResolveAdverTisingBoard
               cardData={request}
               key={index}
               index={index}
@@ -71,4 +66,4 @@ const ConfirmRequested = () => {
   );
 };
 
-export default ConfirmRequested;
+export default ResolvedRequest;

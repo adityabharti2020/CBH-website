@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Stack, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { isLoading } from "../../../redux/action/defaultActions";
 import AdverTisingBoard from "./AdverTisingBoard";
 import ConferenceHall from "./ConferenceHall";
 
-const BookingRequestHome = ({ type, title }) => {
+const BookingRequestHome = ({ title }) => {
   const [BookingDetails, setBookingDetails] = useState();
   const [activeRequestData, setActiveRequestData] = useState(null);
   const [openScheduleMeetModal, setOpenScheduleMeetModal] = useState(false);
@@ -40,7 +40,7 @@ const BookingRequestHome = ({ type, title }) => {
   }, []);
   useEffect(() => {
     if (BookingDetails) {
-      // console.log(BookingDetails);
+      console.log(BookingDetails);
     }
   }, [BookingDetails]);
 
@@ -55,26 +55,26 @@ const BookingRequestHome = ({ type, title }) => {
         columnGap={1}
         display={"flex"}
         justifyContent={"space-between"}
-        sx={{mt:"20px"}}
+        sx={{ mt: "20px" }}
       >
         {BookingDetails?.map((request, index) => {
           return request?.Amenity?.amenityName === "Conference Room" ? (
             <ConferenceHall
               cardData={request}
-              index={request._id}
+              key={request._id}
+              bookingRequest={bookingRequest}
               handleOpenModal={handleOpenModal}
             />
-          ) :
-            (<AdverTisingBoard
+          ) : (
+            <AdverTisingBoard
               cardData={request}
-              index={index}
+              key={index}
               open={openScheduleMeetModal}
               handleClose={handleCloseModal}
               data={activeRequestData}
             />
-            )
+          );
         })}
-        
       </Grid>
     </>
   );

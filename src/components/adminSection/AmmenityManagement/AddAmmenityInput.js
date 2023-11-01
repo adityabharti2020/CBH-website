@@ -251,6 +251,7 @@ const AddAmmenityInput = () => {
                 key={index}
               >
                 <IconButton
+                  disabled={index === 0}
                   sx={{ color: "#9f2936", fontSize: "18px" }}
                   onClick={() => inputFieldDelete(index)}
                 >

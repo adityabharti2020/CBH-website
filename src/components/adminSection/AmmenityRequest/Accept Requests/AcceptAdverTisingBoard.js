@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import dayjs from "dayjs";
 import {
   Grid,
   Stack,
@@ -10,73 +11,31 @@ import {
   ListItemIcon,
   ListItemAvatar,
   ListItemText,
-  Box,
-  Button
 } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
-import dayjs from "dayjs";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
-  //   console.log(cardData);
-  const [accept, setAccept] = useState(false);
-  const [reject, setReject] = useState(false);
-  const navigate = useNavigate();
+const AcceptAdverTisingBoard = ({ cardData, index }) => {
+  const Generateddate = dayjs(cardData.createdAt);
+  const formatteGenerateddate = Generateddate.format("DD-MM-YYYY");
+
+  const UpdatedDate = dayjs(cardData?.updatedAt);
+  const UpdateformattedDate = UpdatedDate.format("DD-MM-YYYY");
+
+ 
+
   const Startdate = dayjs(cardData.dateForAdvertisingBoard.from);
-  const StartformattedDate = Startdate.format("DD-MM-YYYY");
+    const StartformattedDate = Startdate.format("DD-MM-YYYY");
+  
+    const Enddate = dayjs(cardData.dateForAdvertisingBoard.to);
+    const EndformattedDate = Enddate.format("DD-MM-YYYY");
 
-  const Enddate = dayjs(cardData.dateForAdvertisingBoard.to);
-  const EndformattedDate = Enddate.format("DD-MM-YYYY");
-  //   console.log(formattedDate);
-  const Createddate = dayjs(cardData.createdAt);
-  const CreateddateFormatted = Createddate.format("DD-MM-YYYY");
-
-  const SlotStartTimeFormater = (starttime) => {
-    const currentTime = dayjs(starttime);
-    // const formattedTime = currentTime.format('HH:mm:ss');
-    const formattedStartTime = currentTime.format("h:mm A");
-    // console.log(formattedStartTime);
-    return formattedStartTime;
-  };
-  const SlotEndTimeFormater = (endTime) => {
-    const currentTime = dayjs(endTime);
-    // const formattedTime = currentTime.format('HH:mm:ss');
-    const formattedEndTime = currentTime.format("h:mm A");
-    // console.log(formattedEndTime);
-    return formattedEndTime;
-  };
-  const statusAcceptHandler = async () => {
-    setAccept(true);
-    console.log("inside status");
-    try {
-      const response = await axios.put("/api/v1/admin/update/booking/status", {
-        bookingId: cardData._id,
-        orderBookingStatus: "accepted",
-      });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const statusRejectHandler = async () => {
-    setAccept(true);
-    console.log("inside status");
-    try {
-      const response = await axios.put("/api/v1/admin/update/booking/status", {
-        bookingId: cardData._id,
-        orderBookingStatus: "rejected",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <>
-      <Grid
+    
+    <Grid
         item
-        key={index}
+        key={cardData._id}
         xs={12}
         sm={5.75}
         md={5.75}
@@ -87,6 +46,7 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
           borderRadius: "10px",
         }}
       >
+        {" "}
         <Stack
           direction="row"
           spacing={1}
@@ -104,8 +64,8 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
             color={
               cardData?.bookingStatus === "accepted"
                 ? "success"
-                : cardData?.bookingStatus === "rejected"
-                ? "error"
+                : cardData?.bookingStatus === "resolved"
+                ? "info"
                 : "warning"
             }
           />
@@ -155,7 +115,15 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
             <ListItem disablePadding>
               <ListItemText
                 primary="Booking Generated On"
-                secondary={CreateddateFormatted}
+                secondary={formatteGenerateddate}
+              />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText
+                primary="Booking Updated On"
+                secondary={UpdateformattedDate}
               />
             </ListItem>
           </List>
@@ -216,67 +184,10 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
             </ListItem>
           </List>
         </Stack>
-        <Stack direction={"column"} sx={{ justifyContent: "space-between" }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: "auto",
-            }}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: "green",
-                marginX: "15px",
-                "&:hover": { bgcolor: "green" },
-              }}
-              onClick={statusAcceptHandler}
-            >
-              Accept
-            </Button>
-            {/* <Snackbar
-              open={accept}
-              autoHideDuration={3000}
-              onClose={AccepthandleClose}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <AcceptAlert
-                onClose={AccepthandleClose}
-                severity="success"
-                sx={{ width: "100%" }}
-              >
-                Booking Accepted!
-              </AcceptAlert>
-            </Snackbar> */}
-            <Button
-              variant="contained"
-              sx={{ bgcolor: "red", "&:hover": { bgcolor: "red" } }}
-              onClick={statusRejectHandler}
-            >
-              Reject
-            </Button>
-            {/* <Snackbar
-              open={reject}
-              autoHideDuration={3000}
-              onClose={RejecthandleClose}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <RejecttAlert
-                onClose={RejecthandleClose}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Booking Canceled!
-              </RejecttAlert>
-            </Snackbar> */}
-          </Box>
-        </Stack>
       </Grid>
     </>
   );
 };
-AdverTisingBoard.propTypes = { cardData: [] };
+AcceptAdverTisingBoard.propTypes = { cardData: [] };
 
-export default AdverTisingBoard;
+export default AcceptAdverTisingBoard;

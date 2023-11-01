@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React from "react";
 import {
   Grid,
   Stack,
@@ -10,93 +10,37 @@ import {
   ListItemIcon,
   ListItemAvatar,
   ListItemText,
-  Box,
-  Button,
 } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import dayjs from "dayjs";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-// const AcceptAlert = React.forwardRef(function Alert(props, ref){
-//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-// });
-// const RejecttAlert = React.forwardRef(function Alert(props, ref) {
-//   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-// });
+const RejectConferenceHall = ({ cardData }) => {
+  const Generateddate = dayjs(cardData.createdAt);
+  const formatteGenerateddate = Generateddate.format("DD-MM-YYYY");
 
-const ConferenceHall = ({
-  cardData,
-  index,
-  handleOpenModal,
-  bookingRequest,
-}) => {
-  // console.log(cardData);
-  const navigate = useNavigate();
-  const [accept, setAccept] = useState(false);
-  const [reject, setReject] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const AccepthandleClose = () => {
-    setAccept(false);
-    setSuccess(true);
-  };
-  const RejecthandleClose = () => {
-    setReject(false);
-    setSuccess(false);
-  };
-  const date = dayjs(cardData.dateForConferenceHall);
-  const formattedDate = date.format("DD-MM-YYYY");
+  const UpdatedDate = dayjs(cardData?.updatedAt);
+  const UpdateformattedDate = UpdatedDate.format("DD-MM-YYYY");
 
-  const Createddate = dayjs(cardData.createdAt);
-  const CreateddateFormatted = Createddate.format("DD-MM-YYYY");
-  //   console.log(formattedDate);
+  const BookingDate = dayjs(cardData?.dateForConferenceHall);
+  const UpdateBookingDate = BookingDate.format("DD-MM-YYYY");
+
   const SlotStartTimeFormater = (starttime) => {
     const currentTime = dayjs(starttime);
-    // const formattedTime = currentTime.format('HH:mm:ss');
     const formattedStartTime = currentTime.format("h:mm A");
-    // console.log(formattedStartTime);
     return formattedStartTime;
   };
+
   const SlotEndTimeFormater = (endTime) => {
     const currentTime = dayjs(endTime);
-    // const formattedTime = currentTime.format('HH:mm:ss');
     const formattedEndTime = currentTime.format("h:mm A");
-    // console.log(formattedEndTime);
     return formattedEndTime;
-  };
-  const statusAcceptHandler = async () => {
-    setAccept(true);
-    console.log("inside status");
-    try {
-      const response = await axios.put("/api/v1/admin/update/booking/status", {
-        bookingId: cardData._id,
-        orderBookingStatus: "accepted",
-      });
-      bookingRequest();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const statusRejectHandler = async () => {
-    setAccept(true);
-    try {
-      const response = await axios.put("/api/v1/admin/update/booking/status", {
-        bookingId: cardData._id,
-        orderBookingStatus: "rejected",
-      });
-      bookingRequest();
-    } catch (error) {
-      console.log(error);
-    }
   };
   return (
     <>
-      <Grid
+       <Grid
         item
-        key={index}
+        key={cardData._id}
         xs={12}
         sm={5.75}
         md={5.75}
@@ -107,26 +51,20 @@ const ConferenceHall = ({
           borderRadius: "10px",
         }}
       >
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{
-            justifyContent: {
-              xs: "center",
-              sm: "end",
-              md: "end",
-            },
-          }}
-        >
+        <Stack direction="row" spacing={1} sx={{ justifyContent:{
+          xs:"center",
+          sm:"end",
+          md:"end"
+        }}}>
           {/* <Chip label="Conference Hall" color="primary" /> */}
           <Chip
             label={`${cardData?.Amenity.amenityName}  ${cardData?.bookingStatus}`}
             color={
-              cardData?.bookingStatus === "pending"
-                ? "warning"
-                : cardData?.bookingStatus === "accepted"
-                ? "success"
-                : "error"
+              cardData?.bookingStatus === "rejected"
+                ? "error"
+                : cardData?.bookingStatus === "resolved"
+                ? "info"
+                : "warning"
             }
           />
         </Stack>
@@ -167,7 +105,7 @@ const ConferenceHall = ({
             <ListItem disablePadding>
               <ListItemText
                 primary="Date of Booking"
-                secondary={formattedDate}
+                secondary={UpdateBookingDate}
               />
             </ListItem>
           </List>
@@ -175,7 +113,15 @@ const ConferenceHall = ({
             <ListItem disablePadding>
               <ListItemText
                 primary="Booking Generated On"
-                secondary={CreateddateFormatted}
+                secondary={formatteGenerateddate}
+              />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText
+                primary="Booking Updated On"
+                secondary={UpdateformattedDate}
               />
             </ListItem>
           </List>
@@ -293,66 +239,10 @@ const ConferenceHall = ({
             );
           })}
         </Stack>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "auto",
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              bgcolor: "green",
-              marginX: "15px",
-              "&:hover": { bgcolor: "green" },
-            }}
-            onClick={statusAcceptHandler}
-          >
-            Accept
-          </Button>
-          {/* <Snackbar
-              open={accept}
-              autoHideDuration={3000}
-              onClose={AccepthandleClose}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <AcceptAlert
-                onClose={AccepthandleClose}
-                severity="success"
-                sx={{ width: "100%" }}
-              >
-                Booking Accepted!
-              </AcceptAlert>
-            </Snackbar> */}
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "red", "&:hover": { bgcolor: "red" } }}
-            onClick={statusRejectHandler}
-          >
-            Reject
-          </Button>
-          {/* <Snackbar
-              open={reject}
-              autoHideDuration={3000}
-              onClose={RejecthandleClose}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <RejecttAlert
-                onClose={RejecthandleClose}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Booking Canceled!
-              </RejecttAlert>
-            </Snackbar> */}
-        </Box>
       </Grid>
     </>
   );
 };
+RejectConferenceHall.propTypes = { cardData: [] };
 
-ConferenceHall.propTypes = { cardData: [] };
-export default ConferenceHall;
+export default RejectConferenceHall;
