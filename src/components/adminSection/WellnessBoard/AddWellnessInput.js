@@ -19,16 +19,31 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Iconify from "../../iconify/Iconify";
 import { isLoading, openSnackbar } from "../../../redux/action/defaultActions";
+import EditWellnessBoardModal from "./EditWellnessBoardModal";
+import ConfirmationModal from './ConfirmationModal'
 
 const AddWellnessInput = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
-  const [wellnessdata, setwellnessData] = useState();
+  const [wellnessdata, setwellnessData] = useState(null);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [activeData, setActiveData] = useState(null);
+  const [activeId, setactiveId] = useState(null);
+  const [openConfirmationModal, setopenConfirmationModal] = useState(false);
+
+  const toggleEditModal = () => setOpenEditModal(!openEditModal);
+
   const [wellnessField, setwellnessField] = useState({
     cardHeading: "",
     percent: 0,
   });
+  const [updateData, setupdateData] = useState({
+    cardHeading: "",
+    percent: 0,
+  });
+  const [updateImage, setupdateImage] = useState(null);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // const newValue = type === 'file' ? files[0] : value;
@@ -65,6 +80,7 @@ const AddWellnessInput = () => {
       if (res.data.success === true) {
         dispatch(isLoading(false));
         dispatch(openSnackbar("Wellness Added Successfully", "success"));
+        wellnessData();
         setwellnessField({
           cardHeading: "",
           percent: "",
@@ -94,6 +110,64 @@ const AddWellnessInput = () => {
       console.log(wellnessdata);
     }
   }, []);
+  const handleOpenEditModal = (data) => {
+    // console.log(data)
+
+    setActiveData(data);
+    toggleEditModal();
+  };
+  const handleCloseEditModal = () => {
+    setActiveData(null);
+    toggleEditModal();
+  };
+  // console.log(activeData)
+  const handleUpdateWellnessData = async (formdata) => {
+    dispatch(isLoading(true));
+    // console.log(activeData)
+    try {
+      const response = await axios.put(
+        `/api/v1/admin/update/wellness/board/data/${activeData._id}`,formdata
+        
+      );
+      // console.log(response);
+      if (response?.data.success === true) {
+        wellnessData();
+      }
+      handleCloseEditModal();
+      dispatch(openSnackbar("updated", "success"));
+      dispatch(isLoading(false));
+    } catch (error) {
+      console.log("==>", error);
+      dispatch(isLoading(false));
+    }
+  };
+  const handleOpenConfirmationModal = (id) => {
+    setactiveId(id);
+    // setConfirmationMsg(actionType ? "block" : "unblock");
+    setopenConfirmationModal(true);
+  };
+  const handleCloseConfirmationModal = () => {
+    setactiveId(null);
+    setopenConfirmationModal(false);
+  };
+
+  const handleClose = () => handleCloseConfirmationModal();
+  const handleDelete = async () => {
+    setopenConfirmationModal(false);
+    dispatch(isLoading(true));
+    try {
+      const response = await axios.delete(
+        `/api/v1/admin/delete/wellness/board/data/${activeId}`
+      );
+      dispatch(openSnackbar("Wellness data deleted successfully", "success"));
+      dispatch(isLoading(false));
+      wellnessData();
+    } catch (error) {
+      console.log(error);
+      dispatch(openSnackbar("something went wrong", "error"));
+      dispatch(isLoading(false));
+    }
+  };
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -205,7 +279,7 @@ const AddWellnessInput = () => {
                               fontSize: "8px",
                               cursor: "pointer",
                             }}
-                            // onClick={() => handleOpenEditModal(data)}
+                            onClick={() => handleOpenEditModal(data)}
                           />
                           {
                             <DeleteIcon
@@ -214,9 +288,9 @@ const AddWellnessInput = () => {
                                 fontSize: "20px",
                                 cursor: "pointer",
                               }}
-                              // onClick={() =>
-                              //   handleOpenConfirmationModal(data?._id)
-                              // }
+                              onClick={() =>
+                                handleOpenConfirmationModal(data?._id)
+                              }
                             />
                           }
                         </Box>
@@ -240,10 +314,12 @@ const AddWellnessInput = () => {
                               borderRadius: "15px",
                               marginY: "8px",
                               width: "90%",
-                              mt:"18px"
+                              mt: "18px",
                             }}
                           />
-                          <Typography sx={{ textAlign: "end", mr: "30px",mt:"18px" }}>
+                          <Typography
+                            sx={{ textAlign: "end", mr: "30px", mt: "18px" }}
+                          >
                             {data?.percent}%
                           </Typography>
                         </Box>
@@ -252,11 +328,11 @@ const AddWellnessInput = () => {
                             width: "100px",
                             height: "100px",
                             bgcolor: "lightcyan",
-                            display:"flex",
+                            display: "flex",
                           }}
                         >
                           <img
-                            alt="wellness"
+                            alt="wellness pic"
                             style={{ width: "100%" }}
                             src={data?.boardPicture}
                           />
@@ -270,6 +346,23 @@ const AddWellnessInput = () => {
           </Grid>
         </Stack>
       </Box>
+      <EditWellnessBoardModal
+        open={openEditModal}
+        data={activeData}
+        setupdateData={setupdateData}
+        setupdateImage={setupdateImage}
+        updateData={updateData}
+        updateImage={updateImage}
+        handleClose={handleCloseEditModal}
+        handleAction={handleUpdateWellnessData}
+      />
+      <ConfirmationModal
+        open={openConfirmationModal}
+        handleClose={handleClose}
+        handleAction={handleDelete}
+        warningMsg={"delete this"}
+        modalFor="Wellness Data"
+      />
     </>
   );
 };
