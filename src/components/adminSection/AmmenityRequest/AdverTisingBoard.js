@@ -14,13 +14,13 @@ import {
   Button
 } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
-import PunchClockIcon from "@mui/icons-material/PunchClock";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
-  //   console.log(cardData);
+    // console.log(cardData);
   const [accept, setAccept] = useState(false);
   const [reject, setReject] = useState(false);
   const navigate = useNavigate();
@@ -98,17 +98,26 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
             },
           }}
         >
-          {/* <Chip label="Conference Hall" color="primary" /> */}
           <Chip
-            label={`${cardData?.Amenity.amenityName}  ${cardData?.bookingStatus}`}
-            color={
-              cardData?.bookingStatus === "accepted"
-                ? "success"
-                : cardData?.bookingStatus === "rejected"
-                ? "error"
-                : "warning"
-            }
-          />
+              label={`${cardData?.Amenity.amenityName}`}
+              color={
+                cardData?.bookingStatus === "accepted"
+                  ? "success"
+                  : cardData?.bookingStatus === "rejected"
+                  ? "error"
+                  : "warning"
+              }
+            />
+            <Chip
+              label={`${cardData?.bookingStatus.toUpperCase()}`}
+              color={
+                cardData?.bookingStatus === "accepted"
+                  ? "success"
+                  : cardData?.bookingStatus === "rejected"
+                  ? "error"
+                  : "warning"
+              }
+            />
         </Stack>
         <Stack sx={{ marginY: "15px" }}>
           <List>
@@ -125,7 +134,7 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
                 component="body1"
                 sx={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                Bookings Details
+                Booking Detail
               </Typography>
             </ListItem>
           </List>
@@ -146,16 +155,16 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
           <List>
             <ListItem disablePadding>
               <ListItemText
-                primary="Date of Booking"
-                secondary={`${StartformattedDate} to ${EndformattedDate}`}
+                primary="Booked On"
+                secondary={CreateddateFormatted}
               />
             </ListItem>
           </List>
           <List>
             <ListItem disablePadding>
               <ListItemText
-                primary="Booking Generated On"
-                secondary={CreateddateFormatted}
+                primary="Duration of Booking"
+                secondary={`${StartformattedDate} to ${EndformattedDate}`}
               />
             </ListItem>
           </List>
@@ -173,7 +182,7 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
                 component="body1"
                 sx={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                User Details & Price
+                User Detail
               </Typography>
             </ListItem>
           </List>
@@ -210,12 +219,64 @@ const AdverTisingBoard = ({ cardData, index, handleClose, data, open }) => {
           <List>
             <ListItem disablePadding>
               <ListItemText
-                primary="Booking Price"
-                secondary={cardData.price}
+                primary="Email"
+                secondary={cardData.user.email}
               />
             </ListItem>
           </List>
         </Stack>
+        <Stack sx={{ marginY: "15px" }}>
+            <List>
+              <ListItem disablePadding>
+                <ListItemIcon>
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
+                      {<CreditCardIcon />}
+                    </Avatar>
+                  </ListItemAvatar>
+                </ListItemIcon>
+                <Typography
+                  varient="h6"
+                  component="body1"
+                  sx={{ fontSize: "20px", fontWeight: "bold" }}
+                >
+                  Price Detail
+                </Typography>
+              </ListItem>
+            </List>
+          </Stack>
+          <Stack
+            sx={{
+              display: "flex",
+              flexDirection: {
+                xs: "column",
+                sm: "row",
+                md: "row",
+              },
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              marginY: "-20px",
+            }}
+          >
+            <List>
+              <ListItem disablePadding>
+                <ListItemText
+                  primary="Base Price"
+                  secondary={` ${cardData.Amenity.basePrice}`}
+                />
+              </ListItem>
+            </List>
+            <List>
+              <ListItem disablePadding>
+                <ListItemText primary="GST" secondary={`${cardData.Amenity.GST} %`} />
+              </ListItem>
+            </List>
+            <List>
+              <ListItem disablePadding>
+                <ListItemText primary="Total Price" secondary={cardData.price} />
+              </ListItem>
+            </List>
+          </Stack>
         <Stack direction={"column"} sx={{ justifyContent: "space-between" }}>
           <Box
             sx={{

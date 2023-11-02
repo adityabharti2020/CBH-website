@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import dayjs from "dayjs";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -118,15 +119,24 @@ const ConferenceHall = ({
             },
           }}
         >
-          {/* <Chip label="Conference Hall" color="primary" /> */}
-          <Chip
-            label={`${cardData?.Amenity.amenityName}  ${cardData?.bookingStatus}`}
+           <Chip
+            label={`${cardData?.Amenity.amenityName}`}
             color={
-              cardData?.bookingStatus === "pending"
-                ? "warning"
-                : cardData?.bookingStatus === "accepted"
+              cardData?.bookingStatus === "accepted"
                 ? "success"
-                : "error"
+                : cardData?.bookingStatus === "rejected"
+                ? "error"
+                : "warning"
+            }
+          />
+          <Chip
+            label={`${cardData?.bookingStatus.toUpperCase()}`}
+            color={
+              cardData?.bookingStatus === "accepted"
+                ? "success"
+                : cardData?.bookingStatus === "rejected"
+                ? "error"
+                : "warning"
             }
           />
         </Stack>
@@ -145,7 +155,7 @@ const ConferenceHall = ({
                 component="body1"
                 sx={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                Bookings Details
+                Booking Detail
               </Typography>
             </ListItem>
           </List>
@@ -166,7 +176,15 @@ const ConferenceHall = ({
           <List>
             <ListItem disablePadding>
               <ListItemText
-                primary="Date of Booking"
+                primary="Booked On"
+                secondary={CreateddateFormatted}
+              />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText
+                primary="Booked for"
                 secondary={formattedDate}
               />
             </ListItem>
@@ -174,8 +192,8 @@ const ConferenceHall = ({
           <List>
             <ListItem disablePadding>
               <ListItemText
-                primary="Booking Generated On"
-                secondary={CreateddateFormatted}
+                primary='Booking Id'
+                secondary={cardData?._id}
               />
             </ListItem>
           </List>
@@ -193,7 +211,7 @@ const ConferenceHall = ({
                 component="body1"
                 sx={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                User Details & Price
+                User Detail
               </Typography>
             </ListItem>
           </List>
@@ -230,9 +248,61 @@ const ConferenceHall = ({
           <List>
             <ListItem disablePadding>
               <ListItemText
-                primary="Booking Price"
-                secondary={cardData.price}
+                primary="Email"
+                secondary={cardData.user.email}
               />
+            </ListItem>
+          </List>
+        </Stack>
+        <Stack sx={{ marginY: "15px" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemIcon>
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
+                    {<CreditCardIcon />}
+                  </Avatar>
+                </ListItemAvatar>
+              </ListItemIcon>
+              <Typography
+                varient="h6"
+                component="body1"
+                sx={{ fontSize: "20px", fontWeight: "bold" }}
+              >
+                Price Detail
+              </Typography>
+            </ListItem>
+          </List>
+        </Stack>
+        <Stack
+          sx={{
+            display: "flex",
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+              md: "row",
+            },
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            marginY: "-20px",
+          }}
+        >
+          <List>
+            <ListItem disablePadding>
+              <ListItemText
+                primary="Base Price"
+                secondary={` ${cardData.Amenity.basePrice}`}
+              />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText primary="GST" secondary={`${cardData.Amenity.GST} %`} />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText primary="Total Price" secondary={cardData.price} />
             </ListItem>
           </List>
         </Stack>

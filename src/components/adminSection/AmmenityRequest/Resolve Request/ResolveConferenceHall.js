@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+
 import dayjs from "dayjs";
 
 const ResolveConferenceHall = ({ cardData, index }) => {
@@ -41,7 +43,8 @@ const ResolveConferenceHall = ({ cardData, index }) => {
     <>
       <Grid
         item
-        key={index}
+        key={cardData._id}
+        index={index}
         xs={12}
         sm={5.75}
         md={5.75}
@@ -53,25 +56,34 @@ const ResolveConferenceHall = ({ cardData, index }) => {
         }}
       >
         <Stack
-          direction="row"
           spacing={1}
+          direction={{ xs: "column", sm: "row" }}
           sx={{
             justifyContent: {
               xs: "center",
-              sm: "end",
-              md: "end",
+              sm: "space-between",
+              md: "space-between",
             },
           }}
         >
-          {/* <Chip label="Conference Hall" color="primary" /> */}
           <Chip
-            label={`${cardData?.Amenity.amenityName}  ${cardData?.bookingStatus}`}
+            label={`${cardData?.Amenity.amenityName}`}
             color={
               cardData?.bookingStatus === "accepted"
                 ? "success"
-                : cardData?.bookingStatus === "rejected"
-                ? "warning"
-                : "info"
+                : cardData?.bookingStatus === "resolved"
+                ? "info"
+                : "warning"
+            }
+          />
+          <Chip
+            label={`${cardData?.bookingStatus.toUpperCase()}`}
+            color={
+              cardData?.bookingStatus === "accepted"
+                ? "success"
+                : cardData?.bookingStatus === "resolved"
+                ? "info"
+                : "warning"
             }
           />
         </Stack>
@@ -80,7 +92,7 @@ const ResolveConferenceHall = ({ cardData, index }) => {
             <ListItem disablePadding>
               <ListItemIcon sx={{}}>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "dodgerblue", fontSize: "15px" }}>
+                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
                     {<EventIcon />}
                   </Avatar>
                 </ListItemAvatar>
@@ -90,8 +102,9 @@ const ResolveConferenceHall = ({ cardData, index }) => {
                 component="body1"
                 sx={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                Bookings Details
+                Booking Detail
               </Typography>
+              
             </ListItem>
           </List>
         </Stack>
@@ -104,36 +117,44 @@ const ResolveConferenceHall = ({ cardData, index }) => {
               md: "row",
             },
             justifyContent: "space-between",
-            flexWrap: "wrap",
+            flexWrap: { xs: "wrap", sm: "wrap", md: "wrap", lg: "wrap" },
             marginY: "-20px",
           }}
         >
           <List>
             <ListItem disablePadding>
               <ListItemText
-                primary="Date of Booking"
-                secondary={formattedDate}
-              />
-            </ListItem>
-          </List>
-          <List>
-            <ListItem disablePadding>
-              <ListItemText
-                primary="Booking Generated On"
+                primary="Booked On"
                 secondary={CreateddateFormatted}
               />
             </ListItem>
           </List>
           <List>
             <ListItem disablePadding>
+              <ListItemText primary="Booked for" secondary={formattedDate} />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
               <ListItemText
-                primary="Booking Updated On"
+                primary={`${cardData?.bookingStatus} on`}
                 secondary={UpdateformattedDate}
               />
             </ListItem>
           </List>
+          
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack sx={{ marginY: "5px" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText
+                primary='Booking Id'
+                secondary={cardData?._id}
+              />
+            </ListItem>
+          </List>
+          </Stack>
+        <Stack sx={{ mb: "15px" }}>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
@@ -146,7 +167,7 @@ const ResolveConferenceHall = ({ cardData, index }) => {
                 component="body1"
                 sx={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                User Details & Price
+                User Detail
               </Typography>
             </ListItem>
           </List>
@@ -182,10 +203,59 @@ const ResolveConferenceHall = ({ cardData, index }) => {
           </List>
           <List>
             <ListItem disablePadding>
+              <ListItemText primary="Email" secondary={cardData.user.email} />
+            </ListItem>
+          </List>
+        </Stack>
+        <Stack sx={{ marginY: "15px" }}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemIcon>
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
+                    {<CreditCardIcon />}
+                  </Avatar>
+                </ListItemAvatar>
+              </ListItemIcon>
+              <Typography
+                varient="h6"
+                component="body1"
+                sx={{ fontSize: "20px", fontWeight: "bold" }}
+              >
+                Price Detail
+              </Typography>
+            </ListItem>
+          </List>
+        </Stack>
+        <Stack
+          sx={{
+            display: "flex",
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+              md: "row",
+            },
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            marginY: "-20px",
+          }}
+        >
+          <List>
+            <ListItem disablePadding>
               <ListItemText
-                primary="Booking Price"
-                secondary={cardData.price}
+                primary="Base Price"
+                secondary={` ${cardData.Amenity.basePrice}`}
               />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText primary="GST" secondary={`${cardData.Amenity.GST} %`} />
+            </ListItem>
+          </List>
+          <List>
+            <ListItem disablePadding>
+              <ListItemText primary="Total Price" secondary={cardData.price} />
             </ListItem>
           </List>
         </Stack>
@@ -208,12 +278,8 @@ const ResolveConferenceHall = ({ cardData, index }) => {
           </List>
         </Stack>
         <Stack
-          // spacing={1}
-          rowGap={1}
-          // columnGap={2}
           sx={{
-            maxWidth: "450px",
-
+            display: "flex",
             justifyContent: "space-between",
             flexDirection: {
               xs: "column",
@@ -221,16 +287,19 @@ const ResolveConferenceHall = ({ cardData, index }) => {
               md: "row",
             },
             overflow: "hidden",
-            width: "100%",
-            // "& hover": {
-            //   overflowX: "scroll",
-            // },
-
-            flexWrap: "wrap",
+            overflowX: "auto",
+            maxWidth: "500px",
+            maxHeight: {
+              xs: "100px",
+            },
+            overflowY: {
+              xs: "auto",
+            },
+            padding: "10px",
           }}
         >
-          {cardData.bookedSlots.map((slots, id) => {
-            return slots._id && slots.startTime && slots.endTime ? (
+          {/* {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
+            return (
               <Typography
                 key={id}
                 sx={{
@@ -241,6 +310,22 @@ const ResolveConferenceHall = ({ cardData, index }) => {
                   marginBottom: "20px",
                   minWidth: "25%",
                   padding:"10px"
+                }}
+              >
+                (9AM - 10AM)
+              </Typography>
+            );
+          })} */}
+
+          {cardData.bookedSlots.map((slots, id) => {
+            return slots._id && slots.startTime && slots.endTime ? (
+              <Typography
+                key={id}
+                sx={{
+                  textAlign: "center",
+                  bgcolor: "lightcyan",
+                  p: "8px",
+                  borderRadius: "10px",
                 }}
               >
                 ({SlotStartTimeFormater(slots.startTime)} -{" "}

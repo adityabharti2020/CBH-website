@@ -57,6 +57,11 @@ const navConfig = [
     path: "/dashboard/requests",
     icon: icon("ic_request"),
   },
+  {
+    title: "Wellness Board",
+    path: "/dashboard/wellnessboard",
+    icon: icon("ic_wellness"),
+  },
   // {
   //   title: "Ammenity Slots",
   //   path: "/dashboard/createAmmenitySlots",

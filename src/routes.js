@@ -21,6 +21,7 @@ import ConfirmRequested from './components/adminSection/AmmenityRequest/ConfirmR
 import RejectRequest from './components/adminSection/AmmenityRequest/RejectRequest'
 import AddAmmenitySlots from "./components/adminSection/AmmenityManagement/AddAmmenitySlots";
 import MaintenanceRequestHome from "./components/adminSection/MaintenaceRequests/MaintenanceRequestHome";
+import AddWellnessBoard from "./components/adminSection/WellnessBoard/AddWellnessBoard";
 
 // ----------------------------------------------------------------------
 
@@ -62,6 +63,10 @@ export default function Router() {
         {
           path: "/dashboard/requests",
           element: <BookingRequestHome />,
+        },
+        {
+          path: "/dashboard/wellnessboard",
+          element: <AddWellnessBoard />,
         },
         // {
         //   path: "/dashboard/confirmRequests",
