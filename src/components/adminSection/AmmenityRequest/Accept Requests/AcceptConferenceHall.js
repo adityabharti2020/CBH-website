@@ -11,9 +11,11 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
+import '../style.css'
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import AddHomeIcon from '@mui/icons-material/AddHome';
 import dayjs from "dayjs";
 
 const AcceptConferenceHall = ({ cardData, index }) => {
@@ -47,62 +49,66 @@ const AcceptConferenceHall = ({ cardData, index }) => {
         sm={5.75}
         md={5.75}
         sx={{
-          bgcolor: "#CCBBFF",
+          bgcolor: "lightcyan",
           paddingX: "20px",
           paddingY: "20px",
           borderRadius: "10px",
         }}
       >
-        <Stack
+         <Stack
           spacing={1}
-          direction={{ xs: "column", sm: "row" }}
           sx={{
-            justifyContent: {
-              xs: "center",
-              sm: "space-between",
-              md: "space-between",
-            },
+            justifyContent: "space-between",
+            display:"flex",
+            flexDirection:{
+              xs:"column",
+              sm:"row",
+              md:"row",
+            }
           }}
         >
-          <Chip
-            label={`${cardData?.Amenity.amenityName}`}
-            color={
-              cardData?.bookingStatus === "accepted"
-                ? "success"
-                : cardData?.bookingStatus === "resolved"
-                ? "info"
-                : "warning"
-            }
-          />
+          <Stack>
+          <List>
+            <ListItem disablePadding>
+              
+              <Typography
+                varient="h6"
+                component="body1"
+                sx={{ fontSize: "22px", fontWeight: "bold" }}
+              >
+                Booking Detail
+              </Typography>
+            </ListItem>
+          </List>
+        </Stack>
           <Chip
             label={`${cardData?.bookingStatus.toUpperCase()}`}
             color={
               cardData?.bookingStatus === "accepted"
-                ? "success"
-                : cardData?.bookingStatus === "resolved"
-                ? "info"
+                ? "secondary"
+                : cardData?.bookingStatus === "rejected"
+                ? "error"
                 : "warning"
             }
+            sx={{ color: "white" }}
           />
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack sx={{mt:"5px"}}>
           <List>
             <ListItem disablePadding>
               <ListItemIcon sx={{}}>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
-                    {<EventIcon />}
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
+                    {<AddHomeIcon />}
                   </Avatar>
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
-                varient="h6"
-                component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                varient="body1"
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
-                Booking Detail
+                {cardData?.Amenity.amenityName}
               </Typography>
-              
             </ListItem>
           </List>
         </Stack>
@@ -116,7 +122,6 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             },
             justifyContent: "space-between",
             flexWrap: { xs: "wrap", sm: "wrap", md: "wrap", lg: "wrap" },
-            marginY: "-20px",
           }}
         >
           <List>
@@ -152,18 +157,18 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             </ListItem>
           </List>
           </Stack>
-        <Stack sx={{ mb: "15px" }}>
+        <Stack >
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }} />
+                  <Avatar sx={{ bgcolor: "gray",  width: 35, height: 35 }} />
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
                 varient="h6"
                 component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 User Detail
               </Typography>
@@ -180,7 +185,7 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginY: "-20px",
+        
           }}
         >
           <List>
@@ -205,12 +210,12 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             </ListItem>
           </List>
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
                     {<CreditCardIcon />}
                   </Avatar>
                 </ListItemAvatar>
@@ -218,7 +223,7 @@ const AcceptConferenceHall = ({ cardData, index }) => {
               <Typography
                 varient="h6"
                 component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 Price Detail
               </Typography>
@@ -235,7 +240,7 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginY: "-20px",
+            
           }}
         >
           <List>
@@ -257,18 +262,18 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             </ListItem>
           </List>
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray" }}>{<PunchClockIcon />}</Avatar>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>{<PunchClockIcon />}</Avatar>
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
                 varient="h6"
                 component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 Booking Slots
               </Typography>
@@ -276,7 +281,7 @@ const AcceptConferenceHall = ({ cardData, index }) => {
           </List>
         </Stack>
         <Stack
-          sx={{
+           sx={{
             display: "flex",
             justifyContent: "space-between",
             flexDirection: {
@@ -294,8 +299,11 @@ const AcceptConferenceHall = ({ cardData, index }) => {
               xs: "auto",
             },
             padding: "10px",
+           
           }}
-        >
+          className="custom-scrollbar"
+
+         >
           {/* {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
             return (
               <Typography
@@ -321,9 +329,12 @@ const AcceptConferenceHall = ({ cardData, index }) => {
                 key={id}
                 sx={{
                   textAlign: "center",
-                  bgcolor: "lightcyan",
-                  p: "8px",
-                  borderRadius: "10px",
+                  bgcolor: "rgba(128, 224, 224, 0.9)",
+                  borderRadius: "5px",
+                  marginX: "15px",
+                  marginBottom: "20px",
+                  minWidth: "25%",
+                  padding: "10px",
                 }}
               >
                 ({SlotStartTimeFormater(slots.startTime)} -{" "}

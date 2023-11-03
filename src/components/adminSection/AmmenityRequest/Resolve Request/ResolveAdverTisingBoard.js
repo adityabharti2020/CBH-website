@@ -16,10 +16,12 @@ import {
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import AddHomeIcon from '@mui/icons-material/AddHome';
 
 import dayjs from "dayjs";
 
 const ResolveAdvertisingBoard = ({ cardData, index }) => {
+  console.log(cardData)
   const Generateddate = dayjs(cardData.createdAt);
   const formatteGenerateddate = Generateddate.format("DD-MM-YYYY");
 
@@ -40,68 +42,72 @@ const ResolveAdvertisingBoard = ({ cardData, index }) => {
         sm={5.75}
         md={5.75}
         sx={{
-          bgcolor: "#CCBBFF",
+          bgcolor: "rgb(223, 229, 228)",
           paddingX: "20px",
           paddingY: "20px",
           borderRadius: "10px",
           display:"flex",
-          justifyContent:"space-between",
-          flexDirection:"column"
+        justifyContent:"space-between",
+        flexDirection:"column"
         }}
       >
-        {" "}
+        
         <Stack
-          spacing={1}
-          direction={{ xs: "column", sm: "row" }}
-          sx={{
-            justifyContent: {
-              xs: "center",
-              sm: "space-between",
-              md: "space-between",
-            },
-          }}
-        >
-          <Chip
-            label={`${cardData?.Amenity.amenityName}`}
-            color={
-              cardData?.bookingStatus === "accepted"
-                ? "success"
-                : cardData?.bookingStatus === "rejected"
-                ? "error"
-                : "warning"
-            }
-          />
-          <Chip
-            label={`${cardData?.bookingStatus.toUpperCase()}`}
-            color={
-              cardData?.bookingStatus === "accepted"
-                ? "success"
-                : cardData?.bookingStatus === "rejected"
-                ? "error"
-                : "warning"
-            }
-          />
-        </Stack>
-        <Stack sx={{ marginY: "15px" }}>
-          <List>
-            <ListItem disablePadding>
-              <ListItemIcon sx={{}}>
-                <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
-                    {<EventIcon />}
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItemIcon>
-              <Typography
-                varient="h6"
-                component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
-              >
-                Booking Detail
-              </Typography>
-            </ListItem>
-          </List>
-        </Stack>
+        spacing={1}
+        sx={{
+          justifyContent: "space-between",
+          display:"flex",
+          flexDirection:{
+            xs:"column",
+            sm:"row",
+            md:"row",
+          }
+        }}
+      >
+        <Stack>
+        <List>
+          <ListItem disablePadding>
+            
+            <Typography
+              varient="body1"
+              sx={{ fontSize: "22px", fontWeight: "bold" }}
+            >
+              Booking Detail
+            </Typography>
+          </ListItem>
+        </List>
+      </Stack>
+        <Chip
+          label={`${cardData?.bookingStatus.toUpperCase()}`}
+          color={
+            cardData?.bookingStatus === "accepted"
+              ? "success"
+              : cardData?.bookingStatus === "rejected"
+              ? "error"
+              : "warning"
+          }
+          sx={{ color: "white" }}
+        />
+      </Stack>
+      <Stack sx={{mt:"5px"}}>
+        <List>
+          <ListItem disablePadding>
+            <ListItemIcon sx={{}}>
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
+                  {<AddHomeIcon />}
+                </Avatar>
+              </ListItemAvatar>
+            </ListItemIcon>
+            <Typography
+              varient="body1"
+              sx={{ fontSize: "18px", fontWeight: "bold" }}
+            >
+              {cardData?.Amenity.amenityName}
+            </Typography>
+          </ListItem>
+        </List>
+      </Stack>
         <Stack
           sx={{
             display: "flex",
@@ -140,25 +146,28 @@ const ResolveAdvertisingBoard = ({ cardData, index }) => {
             </ListItem>
           </List>
         </Stack>
-        <Stack sx={{ marginY: "5px" }}>
+        <Stack>
           <List>
             <ListItem disablePadding>
-              <ListItemText primary="Booking Id" secondary={cardData?._id} />
+              <ListItemText
+                primary='Booking Id'
+                secondary={cardData?._id}
+              />
             </ListItem>
           </List>
-        </Stack>
-        <Stack sx={{ mb: "15px" }}>
+          </Stack>
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }} />
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}} />
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
                 varient="h6"
                 component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 User Detail
               </Typography>
@@ -175,7 +184,7 @@ const ResolveAdvertisingBoard = ({ cardData, index }) => {
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginY: "-20px",
+            
           }}
         >
           <List>
@@ -200,20 +209,19 @@ const ResolveAdvertisingBoard = ({ cardData, index }) => {
             </ListItem>
           </List>
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
                     {<CreditCardIcon />}
                   </Avatar>
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
-                varient="h6"
-                component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                varient="body1"
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 Price Detail
               </Typography>
@@ -230,7 +238,7 @@ const ResolveAdvertisingBoard = ({ cardData, index }) => {
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginY: "-20px",
+            
           }}
         >
           <List>
@@ -243,10 +251,7 @@ const ResolveAdvertisingBoard = ({ cardData, index }) => {
           </List>
           <List>
             <ListItem disablePadding>
-              <ListItemText
-                primary="GST"
-                secondary={`${cardData.Amenity.GST} %`}
-              />
+              <ListItemText primary="GST" secondary={`${cardData.Amenity.GST} %`} />
             </ListItem>
           </List>
           <List>

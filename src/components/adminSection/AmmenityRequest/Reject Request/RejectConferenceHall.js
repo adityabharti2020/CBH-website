@@ -11,9 +11,13 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
+import '../style.css'
+
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import AddHomeIcon from '@mui/icons-material/AddHome';
+
 
 import dayjs from "dayjs";
 
@@ -68,8 +72,8 @@ const RejectConferenceHall = ({ cardData }) => {
             color={
               cardData?.bookingStatus === "accepted"
                 ? "success"
-                : cardData?.bookingStatus === "resolved"
-                ? "info"
+                : cardData?.bookingStatus === "rejected"
+                ? "error"
                 : "warning"
             }
           />
@@ -78,8 +82,8 @@ const RejectConferenceHall = ({ cardData }) => {
             color={
               cardData?.bookingStatus === "accepted"
                 ? "success"
-                : cardData?.bookingStatus === "resolved"
-                ? "info"
+                : cardData?.bookingStatus === "rejected"
+                ? "error"
                 : "warning"
             }
           />
@@ -275,7 +279,7 @@ const RejectConferenceHall = ({ cardData }) => {
           </List>
         </Stack>
         <Stack
-          sx={{
+           sx={{
             display: "flex",
             justifyContent: "space-between",
             flexDirection: {
@@ -293,8 +297,11 @@ const RejectConferenceHall = ({ cardData }) => {
               xs: "auto",
             },
             padding: "10px",
+           
           }}
-        >
+          className="custom-scrollbar"
+
+         >
           {/* {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
             return (
               <Typography
@@ -320,9 +327,12 @@ const RejectConferenceHall = ({ cardData }) => {
                 key={id}
                 sx={{
                   textAlign: "center",
-                  bgcolor: "lightcyan",
-                  p: "8px",
-                  borderRadius: "10px",
+                  bgcolor: "rgba(128, 224, 224, 0.9)",
+                  borderRadius: "5px",
+                  marginX: "15px",
+                  marginBottom: "20px",
+                  minWidth: "25%",
+                  padding: "10px",
                 }}
               >
                 ({SlotStartTimeFormater(slots.startTime)} -{" "}

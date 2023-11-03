@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { isLoading } from "../../../redux/action/defaultActions";
+import { isLoading , openSnackbar} from "../../../redux/action/defaultActions";
 import AdverTisingBoard from "./AdverTisingBoard";
 import ConferenceHall from "./ConferenceHall";
 
@@ -32,6 +32,7 @@ const BookingRequestHome = ({ title }) => {
     } catch (error) {
       console.log(error);
       dispatch(isLoading(false));
+      dispatch(openSnackbar(error.message, "error"));
     }
   };
 
@@ -46,9 +47,9 @@ const BookingRequestHome = ({ title }) => {
 
   return (
     <>
-      <Typography color="#9f2936" variant="h4" component="h2">
+      {/* <Typography color="#9f2936" variant="h4" component="h2">
         {title}
-      </Typography>
+      </Typography> */}
       <Grid
         container
         rowGap={2}

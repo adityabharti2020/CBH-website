@@ -75,7 +75,6 @@ const EditWellnessBoardModal = ({
         <form onSubmit={updateSubmitHandler}>
           <Stack mt={2} spacing={2}>
             <TextField
-              required
               id="outlined-required"
               label="Card Heading"
               defaultValue={data?.heading}
@@ -86,7 +85,6 @@ const EditWellnessBoardModal = ({
               onChange={(e) => handleInputChange(e)}
             />
             <TextField
-              required
               id="outlined-required"
               defaultValue={data?.percent}
               name="percent"
@@ -102,7 +100,6 @@ const EditWellnessBoardModal = ({
               name="boardPicture"
               size="small"
               fullWidth
-              required
               onChange={(e) => handleImageChange(e)}
             />
           </Stack>

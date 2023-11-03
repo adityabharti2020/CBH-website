@@ -39,9 +39,9 @@ const ConfirmRequested = () => {
   
   return (
     <>
-      <Typography color="#9f2936" variant="h4" component="h2">
+      {/* <Typography color="#9f2936" variant="h4" component="h2">
         Accepted Request
-      </Typography>
+      </Typography> */}
       <Grid
         container
         rowGap={2}

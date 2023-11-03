@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Stack,
@@ -13,14 +13,18 @@ import {
   Box,
   Button,
 } from "@mui/material";
+import './style.css'
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import AddHomeIcon from '@mui/icons-material/AddHome';
 import dayjs from "dayjs";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { isLoading ,openSnackbar} from "../../../redux/action/defaultActions";
 
 // const AcceptAlert = React.forwardRef(function Alert(props, ref){
 //   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -35,7 +39,8 @@ const ConferenceHall = ({
   handleOpenModal,
   bookingRequest,
 }) => {
-  // console.log(cardData);
+  const dispatch = useDispatch()
+  console.log(cardData);
   const navigate = useNavigate();
   const [accept, setAccept] = useState(false);
   const [reject, setReject] = useState(false);
@@ -79,6 +84,8 @@ const ConferenceHall = ({
       bookingRequest();
     } catch (error) {
       console.log(error);
+      dispatch(isLoading(false));
+      dispatch(openSnackbar(error.message, "error"));
     }
   };
   const statusRejectHandler = async () => {
@@ -91,6 +98,8 @@ const ConferenceHall = ({
       bookingRequest();
     } catch (error) {
       console.log(error);
+      dispatch(isLoading(false));
+      dispatch(openSnackbar(error.message, "error"));
     }
   };
   return (
@@ -102,60 +111,65 @@ const ConferenceHall = ({
         sm={5.75}
         md={5.75}
         sx={{
-          bgcolor: "#CCBBFF",
+          bgcolor: "lightcyan",
           paddingX: "20px",
           paddingY: "20px",
           borderRadius: "10px",
         }}
       >
         <Stack
-          direction="row"
           spacing={1}
           sx={{
-            justifyContent: {
-              xs: "center",
-              sm: "end",
-              md: "end",
-            },
+            justifyContent: "space-between",
+            display:"flex",
+            flexDirection:{
+              xs:"column",
+              sm:"row",
+              md:"row",
+            }
           }}
         >
-           <Chip
-            label={`${cardData?.Amenity.amenityName}`}
-            color={
-              cardData?.bookingStatus === "accepted"
-                ? "success"
-                : cardData?.bookingStatus === "rejected"
-                ? "error"
-                : "warning"
-            }
-          />
+          <Stack>
+          <List>
+            <ListItem disablePadding>
+              
+              <Typography
+                varient="h6"
+                component="body1"
+                sx={{ fontSize: "22px", fontWeight: "bold" }}
+              >
+                Booking Detail
+              </Typography>
+            </ListItem>
+          </List>
+        </Stack>
           <Chip
             label={`${cardData?.bookingStatus.toUpperCase()}`}
             color={
               cardData?.bookingStatus === "accepted"
-                ? "success"
+                ? "primary"
                 : cardData?.bookingStatus === "rejected"
                 ? "error"
                 : "warning"
             }
+            sx={{ color: "white" }}
           />
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack sx={{mt:"5px"}}>
           <List>
             <ListItem disablePadding>
               <ListItemIcon sx={{}}>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "dodgerblue", fontSize: "15px" }}>
-                    {<EventIcon />}
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
+                    {<AddHomeIcon />}
                   </Avatar>
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
-                varient="h6"
-                component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                varient="body1"
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
-                Booking Detail
+                {cardData?.Amenity.amenityName}
               </Typography>
             </ListItem>
           </List>
@@ -170,7 +184,7 @@ const ConferenceHall = ({
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginY: "-20px",
+            // marginY: "px",
           }}
         >
           <List>
@@ -183,33 +197,27 @@ const ConferenceHall = ({
           </List>
           <List>
             <ListItem disablePadding>
-              <ListItemText
-                primary="Booked for"
-                secondary={formattedDate}
-              />
+              <ListItemText primary="Booked for" secondary={formattedDate} />
             </ListItem>
           </List>
           <List>
             <ListItem disablePadding>
-              <ListItemText
-                primary='Booking Id'
-                secondary={cardData?._id}
-              />
+              <ListItemText primary="Booking Id" secondary={cardData?._id} />
             </ListItem>
           </List>
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }} />
+                  <Avatar sx={{ bgcolor: "gray",width: 35, height: 35}} />
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
                 varient="h6"
                 component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 User Detail
               </Typography>
@@ -226,7 +234,6 @@ const ConferenceHall = ({
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginY: "-20px",
           }}
         >
           <List>
@@ -247,19 +254,16 @@ const ConferenceHall = ({
           </List>
           <List>
             <ListItem disablePadding>
-              <ListItemText
-                primary="Email"
-                secondary={cardData.user.email}
-              />
+              <ListItemText primary="Email" secondary={cardData.user.email} />
             </ListItem>
           </List>
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack >
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", fontSize: "15px" }}>
+                  <Avatar sx={{ bgcolor: "gray",width: 35, height: 35}}>
                     {<CreditCardIcon />}
                   </Avatar>
                 </ListItemAvatar>
@@ -267,7 +271,7 @@ const ConferenceHall = ({
               <Typography
                 varient="h6"
                 component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 Price Detail
               </Typography>
@@ -284,7 +288,6 @@ const ConferenceHall = ({
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            marginY: "-20px",
           }}
         >
           <List>
@@ -297,7 +300,10 @@ const ConferenceHall = ({
           </List>
           <List>
             <ListItem disablePadding>
-              <ListItemText primary="GST" secondary={`${cardData.Amenity.GST} %`} />
+              <ListItemText
+                primary="GST"
+                secondary={`${cardData.Amenity.GST} %`}
+              />
             </ListItem>
           </List>
           <List>
@@ -306,18 +312,18 @@ const ConferenceHall = ({
             </ListItem>
           </List>
         </Stack>
-        <Stack sx={{ marginY: "15px" }}>
+        <Stack >
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray" }}>{<PunchClockIcon />}</Avatar>
+                  <Avatar sx={{ bgcolor: "gray",width: 35, height: 35}}>{<PunchClockIcon />}</Avatar>
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
                 varient="h6"
                 component="body1"
-                sx={{ fontSize: "20px", fontWeight: "bold" }}
+                sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
                 Booking Slots
               </Typography>
@@ -325,7 +331,7 @@ const ConferenceHall = ({
           </List>
         </Stack>
         <Stack
-          sx={{
+           sx={{
             display: "flex",
             justifyContent: "space-between",
             flexDirection: {
@@ -334,25 +340,50 @@ const ConferenceHall = ({
               md: "row",
             },
             overflow: "hidden",
-            width: "100%",
-            "& hover": {
-              overflowX: "scroll",
+            overflowX: "auto",
+            maxWidth: "500px",
+            maxHeight: {
+              xs: "100px",
             },
-            flexWrap: "wrap",
+            overflowY: {
+              xs: "auto",
+            },
+            padding: "10px",
+           
           }}
+          className="custom-scrollbar"
         >
-          {cardData.bookedSlots.map((slots, id) => {
+          {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
+            return (
+              <Typography
+                key={id}
+                sx={{
+                  textAlign: "center",
+                  bgcolor: "rgba(128, 224, 224, 0.9)",
+                  borderRadius: "5px",
+                  marginX: "15px",
+                  marginBottom: "20px",
+                  minWidth: "25%",
+                  padding:"10px",
+                
+                }}
+              >
+                (9AM - 10AM)
+              </Typography>
+            );
+          })}
+          {/* {cardData.bookedSlots.map((slots, id) => {
             return slots._id && slots.startTime && slots.endTime ? (
               <Typography
                 key={id}
                 sx={{
                   textAlign: "center",
-                  bgcolor: "lightcyan",
+                  bgcolor: "rgba(128, 224, 224, 0.9)",
                   borderRadius: "5px",
                   marginX: "15px",
                   marginBottom: "20px",
                   minWidth: "25%",
-                  padding:"10px"
+                  padding: "10px",
                 }}
               >
                 ({SlotStartTimeFormater(slots.startTime)} -{" "}
@@ -361,7 +392,7 @@ const ConferenceHall = ({
             ) : (
               "Not available"
             );
-          })}
+          })} */}
         </Stack>
 
         <Box
@@ -369,7 +400,8 @@ const ConferenceHall = ({
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
-            marginTop: "auto",
+            marginTop: "15px",
+            marginBottom:"-10px"
           }}
         >
           <Button

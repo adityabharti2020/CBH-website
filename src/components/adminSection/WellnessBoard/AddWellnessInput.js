@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Checkbox,
-  Container,
-  FormControlLabel,
   Grid,
-  IconButton,
   Paper,
   Stack,
   TextField,
@@ -20,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Iconify from "../../iconify/Iconify";
 import { isLoading, openSnackbar } from "../../../redux/action/defaultActions";
 import EditWellnessBoardModal from "./EditWellnessBoardModal";
-import ConfirmationModal from './ConfirmationModal'
+import ConfirmationModal from "./ConfirmationModal";
 
 const AddWellnessInput = () => {
   const dispatch = useDispatch();
@@ -36,11 +32,11 @@ const AddWellnessInput = () => {
 
   const [wellnessField, setwellnessField] = useState({
     cardHeading: "",
-    percent: 0,
+    percent: "",
   });
   const [updateData, setupdateData] = useState({
     cardHeading: "",
-    percent: 0,
+    percent: "",
   });
   const [updateImage, setupdateImage] = useState(null);
 
@@ -58,10 +54,8 @@ const AddWellnessInput = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { cardHeading, percent } = wellnessField;
     dispatch(isLoading(true));
-    console.log(image);
-    console.log(wellnessField);
+
     const formdata = new FormData();
     formdata.append("cardHeading", wellnessField.cardHeading);
     formdata.append("percent", wellnessField.percent);
@@ -76,16 +70,20 @@ const AddWellnessInput = () => {
         `/api/v1/admin/create/wellness/board/data`,
         formdata
       );
-      console.log("create Wellness Board", res);
-      if (res.data.success === true) {
-        dispatch(isLoading(false));
-        dispatch(openSnackbar("Wellness Added Successfully", "success"));
-        wellnessData();
+
+      
+      console.log("create Wellness Board", res.data);
+      if (res?.data.success === true) {
         setwellnessField({
           cardHeading: "",
           percent: "",
-          boardPicture: null,
         });
+        setImage("");
+        dispatch(isLoading(false));
+        dispatch(openSnackbar("Wellness Added Successfully", "success"));
+       
+        wellnessData();
+        
       }
     } catch (error) {
       console.log(error);
@@ -126,8 +124,8 @@ const AddWellnessInput = () => {
     // console.log(activeData)
     try {
       const response = await axios.put(
-        `/api/v1/admin/update/wellness/board/data/${activeData._id}`,formdata
-        
+        `/api/v1/admin/update/wellness/board/data/${activeData._id}`,
+        formdata
       );
       // console.log(response);
       if (response?.data.success === true) {
@@ -196,7 +194,7 @@ const AddWellnessInput = () => {
                 size="small"
                 type="string"
                 label="Card Heading"
-                value={wellnessField?.wellnessText}
+                value={wellnessField?.cardHeading}
                 onChange={(event) => handleInputChange(event)}
               />
             </Grid>
@@ -224,6 +222,7 @@ const AddWellnessInput = () => {
                 fullWidth
                 required
                 type="file"
+                // value={image}
                 // label="Board Picture"
                 onChange={(event) => handleImageChange(event)}
               />
@@ -232,7 +231,7 @@ const AddWellnessInput = () => {
         </Grid>
         <Button
           type="submit"
-          style={{ margin: "10px", border: "1px solid blue" }}
+          style={{ margin: "10px", border: "1px solid #9f2936" }}
         >
           Submit
         </Button>

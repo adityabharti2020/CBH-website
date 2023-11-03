@@ -35,7 +35,7 @@ const ConfirmationModal = ({
       >
         <Box sx={style}>
           <Typography variant="h4" color={"primary"}>
-            Are you sure ? You want to {warningMsg} the {modalFor} !
+            Are you sure ? You want to {warningMsg}  {modalFor} !
           </Typography>
           {/* <Stack>
             <Typography>Are You sure ?</Typography>
