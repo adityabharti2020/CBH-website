@@ -21,10 +21,12 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Box,
 } from "@mui/material";
 // components
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import axios from "axios";
 import { IMG_PATH } from "../utils/url";
 import { isLoading, openSnackbar } from "../redux/action/defaultActions";
@@ -35,13 +37,15 @@ import Scrollbar from "../components/scrollbar";
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import USERLIST from "../_mock/user";
-
+import UserProfileModal from "./UserProfileModal";
+import UserDetailsEditModel from "./UserDetailsEditModel";
+import { DropDown } from "./DropDown";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
   { id: "email", label: "Email", alignRight: false },
-  { id: "gender", label: "Gender", alignRight: false },
+  { id: "Shop", label: "Shop No", alignRight: false },
   { id: "contact", label: "Contact Number", alignRight: false },
   { id: "username", label: "username", alignRight: false },
   { id: "" },
@@ -102,10 +106,28 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event) => {
+  const [activeData, setActiveData] = useState(null);
+  const [userId, setuserId] = useState(null);
+  const [editActiveData, setEditActiveData] = useState(null);
+  const [openProfileModal, setOpenProfileModal] = useState(false);
+  const [OpenUserEditModal, setOpenUserEditModal] = useState(false);
+  const [updatedata, setUpdatedData] = useState({
+    contactNo: "",
+    email: "",
+    shops: [],
+  });
+
+  // console.log(updatedata);
+  const toggleProfileModal = () => setOpenProfileModal(!openProfileModal);
+  // console.log(openProfileModal);
+
+  const handleOpenMenu = (event, data) => {
+    setuserId(data._id);
+    setEditActiveData(data);
+
     setOpen(event.currentTarget);
   };
-
+  // console.log(activeId)
   const handleCloseMenu = () => {
     setOpen(null);
   };
@@ -185,13 +207,59 @@ export default function UserPage() {
   useEffect(() => {
     getAllusers();
   }, []);
+  const openProfileModalHandler = (data) => {
+    setActiveData(data);
+    toggleProfileModal();
+    // console.log(data)
+  };
+  const profileCloseHandlerModal = () => {
+    setActiveData(null);
+    toggleProfileModal();
+  };
+  const toggleUserEditModal = () => setOpenUserEditModal(!OpenUserEditModal);
 
+  const handleOpenUserEditModal = () => {
+    // console.log(data)
+
+    toggleUserEditModal();
+  };
+  const handleCloseUserEditModal = () => {
+    setEditActiveData(null);
+    setOpen(null);
+
+    toggleUserEditModal();
+  };
+  const UserUpdateHandler = async () => {
+    dispatch(isLoading(true));
+    // console.log("update api =>", updatedata);
+    try {
+      const response = await axios.put(
+        `/api/v1/admin/update/user/and/shops/alloted/${userId}`,
+        {
+          contactNo: updatedata.contactNo,
+          email: updatedata.email,
+          shopsAlloted: updatedata.shops,
+        }
+      );
+      console.log(response);
+      console.log(updatedata);
+      if (response?.statusText === "OK") {
+        getAllusers();
+      }
+      handleCloseUserEditModal();
+      dispatch(openSnackbar("updated", "success"));
+      dispatch(isLoading(false));
+    } catch (error) {
+      console.log(error);
+      dispatch(openSnackbar("something went wrong", "error"));
+      dispatch(isLoading(false));
+    }
+  };
   return (
     <>
       <Helmet>
         <title> User | Society Management </title>
       </Helmet>
-
       <Container>
         <Stack
           direction="row"
@@ -207,7 +275,7 @@ export default function UserPage() {
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={() => navigate("/dashboard/user/createUser")}
           >
-           Add User
+            Add User
           </Button>
         </Stack>
 
@@ -235,7 +303,7 @@ export default function UserPage() {
                         email,
                         gender,
                         profilePicture,
-                        shopsAllocated,
+                        shopsAlloted,
                         userName,
                         contactNo,
                       } = row;
@@ -263,20 +331,31 @@ export default function UserPage() {
                               direction="row"
                               alignItems="center"
                               spacing={2}
+                              sx={{ cursor: "pointer" }}
+                              onClick={() => openProfileModalHandler(row._id)}
                             >
                               <Avatar
                                 alt={firstName}
                                 src={`${IMG_PATH}${profilePicture?.url}`}
                               />
-                              <Typography variant="subtitle2" noWrap>
+                              <Typography
+                                variant="subtitle2"
+                                noWrap
+                                sx={{ cursor: "pointer" }}
+                              >
                                 {`${firstName} ${lastName}`}
                               </Typography>
                             </Stack>
                           </TableCell>
 
                           <TableCell align="left">{email}</TableCell>
-
-                          <TableCell align="left">{gender}</TableCell>
+                          <Box
+                            sx={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <TableCell align="left">
+                              <DropDown shopsAlloted={shopsAlloted} />
+                            </TableCell>
+                          </Box>
 
                           <TableCell align="left">{contactNo}</TableCell>
 
@@ -286,7 +365,7 @@ export default function UserPage() {
                             <IconButton
                               size="large"
                               color="inherit"
-                              onClick={handleOpenMenu}
+                              onClick={(event) => handleOpenMenu(event, row)}
                             >
                               <Iconify icon={"eva:more-vertical-fill"} />
                             </IconButton>
@@ -328,7 +407,7 @@ export default function UserPage() {
               </Table>
             </TableContainer>
           </Scrollbar>
-{/* 
+          {/* 
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
@@ -340,30 +419,57 @@ export default function UserPage() {
           /> */}
         </Card>
       </Container>
-
       <Popover
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleCloseMenu}
         anchorOrigin={{ vertical: "top", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            "& .MuiMenuItem-root": {
-              px: 1,
-              typography: "body2",
-              borderRadius: 0.75,
-            },
-          },
-        }}
+        // PaperProps={{
+        //   sx: {
+        //     p: 1,
+        //     width: 140,
+        //     "& .MuiMenuItem-root": {
+        //       px: 1,
+        //       typography: "body2",
+        //       borderRadius: 0.75,
+        //     },
+        //   },
+        // }}
       >
         <MenuItem sx={{ color: "error.main" }}>
           <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
+        <MenuItem
+          sx={{ color: "error.main" }}
+          onClick={handleOpenUserEditModal}
+        >
+          <Iconify icon={"mingcute:edit-line"} sx={{ mr: 2 }} />
+          Edit
+        </MenuItem>
+        <MenuItem
+          sx={{ color: "error.main" }}
+          // onClick={handleOpenUserEditModal}
+        >
+          {<RemoveCircleOutlineIcon sx={{ mr: 1 }} />}Remove Shops
+        </MenuItem>
       </Popover>
+      <UserProfileModal
+        open={openProfileModal}
+        data={activeData}
+        handleClose={profileCloseHandlerModal}
+      />
+      <UserDetailsEditModel
+        data={editActiveData}
+        userId={userId}
+        getAllusers={getAllusers}
+        open={OpenUserEditModal}
+        handleClose={handleCloseUserEditModal}
+        updatedata={updatedata}
+        setUpdatedData={setUpdatedData}
+        handleAction={UserUpdateHandler}
+      />
     </>
   );
 }

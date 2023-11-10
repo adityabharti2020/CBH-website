@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 
 const EditAmmenityModal = ({
@@ -22,7 +22,6 @@ const EditAmmenityModal = ({
     e.preventDefault();
     //  console.log("in")
   };
- 
   const updateInputChange = (e) => {
     const { name, value } = e.target;
     setupdateData((updateData) => ({
@@ -30,6 +29,13 @@ const EditAmmenityModal = ({
       [name]: value,
     }));
   };
+  useEffect(() => {
+    setupdateData({
+      newBasePrice: data?.basePrice,
+      newGST: data?.GST,
+    });
+  }, [data]);
+
   return (
     <Modal
       open={open}
@@ -78,6 +84,7 @@ const EditAmmenityModal = ({
               name="newBasePrice"
               label="Base Price"
               size="small"
+              value={updateData.newBasePrice}
               onChange={(e) => updateInputChange(e)}
             />
             <TextField
@@ -87,6 +94,7 @@ const EditAmmenityModal = ({
               name="newGST"
               label="GST"
               size="small"
+              value={updateData.newGST}
               InputProps={{
                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
               }}

@@ -11,13 +11,12 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import '../style.css'
+import "../style.css";
 
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import AddHomeIcon from '@mui/icons-material/AddHome';
-
+import AddHomeIcon from "@mui/icons-material/AddHome";
 
 import dayjs from "dayjs";
 
@@ -105,7 +104,6 @@ const RejectConferenceHall = ({ cardData }) => {
               >
                 Booking Detail
               </Typography>
-              
             </ListItem>
           </List>
         </Stack>
@@ -143,18 +141,14 @@ const RejectConferenceHall = ({ cardData }) => {
               />
             </ListItem>
           </List>
-          
         </Stack>
         <Stack sx={{ marginY: "5px" }}>
           <List>
             <ListItem disablePadding>
-              <ListItemText
-                primary='Booking Id'
-                secondary={cardData?._id}
-              />
+              <ListItemText primary="Booking Id" secondary={cardData?._id} />
             </ListItem>
           </List>
-          </Stack>
+        </Stack>
         <Stack sx={{ mb: "15px" }}>
           <List>
             <ListItem disablePadding>
@@ -251,7 +245,10 @@ const RejectConferenceHall = ({ cardData }) => {
           </List>
           <List>
             <ListItem disablePadding>
-              <ListItemText primary="GST" secondary={`${cardData.Amenity.GST} %`} />
+              <ListItemText
+                primary="GST"
+                secondary={`${cardData.Amenity.GST} %`}
+              />
             </ListItem>
           </List>
           <List>
@@ -279,7 +276,7 @@ const RejectConferenceHall = ({ cardData }) => {
           </List>
         </Stack>
         <Stack
-           sx={{
+          sx={{
             display: "flex",
             justifyContent: "space-between",
             flexDirection: {
@@ -297,11 +294,9 @@ const RejectConferenceHall = ({ cardData }) => {
               xs: "auto",
             },
             padding: "10px",
-           
           }}
           className="custom-scrollbar"
-
-         >
+        >
           {/* {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
             return (
               <Typography
@@ -322,24 +317,24 @@ const RejectConferenceHall = ({ cardData }) => {
           })} */}
 
           {cardData.bookedSlots.map((slots, id) => {
-            return slots._id && slots.startTime && slots.endTime ? (
+            return (
               <Typography
                 key={id}
                 sx={{
                   textAlign: "center",
                   bgcolor: "rgba(128, 224, 224, 0.9)",
                   borderRadius: "5px",
-                  marginX: "15px",
+                  marginX: "10px",
                   marginBottom: "20px",
-                  minWidth: "25%",
-                  padding: "10px",
+                  minWidth: "30%",
+                  padding: "5px",
+                  fontSize: "15px",
                 }}
               >
-                ({SlotStartTimeFormater(slots.startTime)} -{" "}
-                {SlotEndTimeFormater(slots.endTime)})
+                {`${SlotStartTimeFormater(
+                  slots.startTime
+                )} - ${SlotEndTimeFormater(slots.endTime)}`}
               </Typography>
-            ) : (
-              "Not available"
             );
           })}
         </Stack>

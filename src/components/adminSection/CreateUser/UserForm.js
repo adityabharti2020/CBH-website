@@ -3,9 +3,6 @@ import {
   Button,
   Container,
   Grid,
-  IconButton,
-  Input,
-  InputAdornment,
   Paper,
   Stack,
   TextField,
@@ -13,31 +10,30 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import axios from "axios";
-import Autocomplete from "@mui/joy/Autocomplete";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { isLoading, openSnackbar } from "../../../redux/action/defaultActions";
-import Iconify from "../../iconify";
-import AddUserDropdown from "./AddUserDropdown";
+// import Iconify from "../../iconify";
+// import AddUserDropdown from "./AddUserDropdown";
+// import ShopDropDown from "./ShopDropDown";
+import Tags from "./Tags";
 
-const formdata = new FormData();
 const UserForm = () => {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formDetail, setFormDetail] = useState({
     firstName: "",
     lastName: "",
-    address: "",
     email: "",
-    password: "",
     contactNo: "",
     shopId: [],
   });
   const [showPassword, setShowPassword] = useState(false);
   const [file, setFile] = useState(null);
   const [shopArray, setShopArray] = useState([]);
+
+  console.log(formDetail.shopId);
 
   const handleShopPushArray = (id) => {
     const tempArray = shopArray;
@@ -57,8 +53,10 @@ const UserForm = () => {
   const handleUpload = (e) => {
     // console.log(e.target.files);
     // setFile(URL.createObjectURL(e.target.files[0]));
-    formdata.append("file", e.target.files[0]);
-    setFile(URL.createObjectURL(e.target.files[0]));
+    // formdata.append("file", e.target.files[0]);
+    // setFile(URL.createObjectURL(e.target.files[0]));
+    setFile(e.target.files[0]);
+
   };
   // *****************************Handle ChangeThe CHange the in textBOx************************************
   const handleChange = (e) => {
@@ -70,10 +68,21 @@ const UserForm = () => {
   // *****************************Handle Submit Form************************************
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("userDetalis", formDetail);
     dispatch(isLoading(true));
-    try {
-      const res = await axios.post(`/api/v1/admin/sign/in`, formDetail);
 
+    const formdata = new FormData();
+    formdata.append("firstName", formDetail.firstName);
+    formdata.append("lastName", formDetail.lastName);
+    formdata.append("email", formDetail.email);
+    formdata.append("gender", formDetail.gender);
+    formdata.append("contactNo", formDetail.contactNo);
+    formdata.append("shops", formDetail.shopId);
+    formdata.append("profilePicture", file);
+
+    try {
+      const res = await axios.post(`/api/v1/admin/create/user`, formdata);
+      console.log(res);
       if (res.data.success === true) {
         dispatch(isLoading(false));
         dispatch(openSnackbar("logged in Successfully", "success"));
@@ -85,6 +94,7 @@ const UserForm = () => {
       console.log("galat hai credentials");
     }
   };
+
   return (
     <Container>
       <Stack
@@ -185,26 +195,20 @@ const UserForm = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
-              {" "}
-              <TextField
-                name="address"
-                label="Address"
-                size="small"
-                multiline
-                rows={3}
-                fullWidth
-                value={formDetail?.address}
-                required
-                onChange={handleChange}
-              />
-            </Grid>
 
             <Grid item xs={12} sm={12}>
-             lll
-             
+              <Tags
+                settingShopArray={shopArray}
+                formDetail={formDetail}
+                setFormDetails={setFormDetail}
+              />
+              {/* <ShopDropDown
+                settingShopArray={shopArray}
+                formDetail={formDetail}
+                setFormDetails={setFormDetail}
+              /> */}
             </Grid>
-            <Grid item xs={12} sm={5.75}>
+            {/* <Grid item xs={12} sm={5.75}>
               {" "}
               <TextField
                 name="password"
@@ -230,7 +234,7 @@ const UserForm = () => {
                 onChange={handleChange}
                 sx={{ minWidth: "100%" }}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={5.75}>
               {file ? (
                 <>

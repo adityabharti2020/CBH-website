@@ -34,9 +34,9 @@ const ResolvedRequest = () => {
   }, [resolve]);
   return (
     <>
-      <Typography color="#9f2936" variant="h4" component="h2">
+      {/* <Typography color="#9f2936" variant="h4" component="h2">
         Past Bookings
-      </Typography>
+      </Typography> */}
       <Grid
         container
         rowGap={2}

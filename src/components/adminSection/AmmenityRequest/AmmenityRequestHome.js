@@ -15,6 +15,7 @@ import BookingRequest from './BookingRequest'
 import ConfirmRequested from './ConfirmRequested'
 import RejectRequest from './RejectRequest'
 import ResolvedRequest from './ResolvedRequest'
+import AmenityTabView from "./AmenityTablerView/AmenityTabView";
 
 const AmmenityRequest = () => {
   const navigate = useNavigate();
@@ -64,10 +65,11 @@ const AmmenityRequest = () => {
                 variant="scrollable"
                 scrollButtons="auto"
               >
-                <Tab label="Pending" {...a11yProps(0)} />
-                <Tab label="Accepted" {...a11yProps(1)} />
-                <Tab label="Rejected" {...a11yProps(2)} />
-                <Tab label="Past Bookings" {...a11yProps(3)} />
+                <Tab label="Tabuler View" {...a11yProps(0)} />
+                <Tab label="Pending" {...a11yProps(1)} />
+                <Tab label="Accepted" {...a11yProps(2)} />
+                <Tab label="Rejected" {...a11yProps(3)} />
+                <Tab label="Past Bookings" {...a11yProps(4)} />
               </Tabs>
             </Box>
             <div
@@ -79,9 +81,9 @@ const AmmenityRequest = () => {
               {value === 0 && (
                 <Box sx={{ p: 3 }}>
                   {/* /api/v1/admin/get/all/maintenance/requests */}
-                  <BookingRequest
-                    title={"Pending Requests"}
-                    type={"new"}
+                  <AmenityTabView
+                    // title={"Pending Requests"}
+                    // type={"new"}
                   />
                 </Box>
               )}
@@ -94,9 +96,11 @@ const AmmenityRequest = () => {
             >
               {value === 1 && (
                 <Box sx={{ p: 3 }}>
-                  <ConfirmRequested
-                  title={"Confirm Requests"}
-                  type={"new"}/>
+                  {/* /api/v1/admin/get/all/maintenance/requests */}
+                  <BookingRequest
+                    title={"Pending Requests"}
+                    type={"new"}
+                  />
                 </Box>
               )}
             </div>
@@ -108,6 +112,20 @@ const AmmenityRequest = () => {
             >
               {value === 2 && (
                 <Box sx={{ p: 3 }}>
+                  <ConfirmRequested
+                  title={"Confirm Requests"}
+                  type={"new"}/>
+                </Box>
+              )}
+            </div>
+            <div
+              role="tabpanel"
+              hidden={value !== 3}
+              id={`simple-tabpanel-${3}`}
+              aria-labelledby={`simple-tab-${3}`}
+            >
+              {value === 3 && (
+                <Box sx={{ p: 3 }}>
                   <RejectRequest
                   title={"Reject Requests"}
                   type={"new"}/>
@@ -116,11 +134,11 @@ const AmmenityRequest = () => {
             </div>
             <div
               role="tabpanel"
-              hidden={value !== 3}
-              id={`simple-tabpanel-${2}`}
-              aria-labelledby={`simple-tab-${2}`}
+              hidden={value !== 4}
+              id={`simple-tabpanel-${4}`}
+              aria-labelledby={`simple-tab-${4}`}
             >
-              {value === 3 && (
+              {value === 4 && (
                 <Box sx={{ p: 3 }}>
                   <ResolvedRequest
                   title={"Reject Requests"}

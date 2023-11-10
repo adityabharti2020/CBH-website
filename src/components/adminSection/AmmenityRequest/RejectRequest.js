@@ -34,9 +34,9 @@ const RejectRequest = () => {
   }, [rejectReq]);
   return (
     <>
-      <Typography color="#9f2936" variant="h4" component="h2">
+      {/* <Typography color="#9f2936" variant="h4" component="h2">
         Rejected Request
-      </Typography>
+      </Typography> */}
       <Grid
         container
         rowGap={2}

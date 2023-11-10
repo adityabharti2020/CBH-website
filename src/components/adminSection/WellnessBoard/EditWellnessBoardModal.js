@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ const EditWellnessBoardModal = ({
   const updateSubmitHandler = (e) => {
     e.preventDefault();
     const formdata = new FormData();
-    formdata.append("cardHeading", updateData.cardHeading);
+    formdata.append("heading", updateData.cardHeading);
     formdata.append("percent", updateData.percent);
     formdata.append("boardPicture", updateImage);
     handleAction(formdata);
@@ -46,6 +46,12 @@ const EditWellnessBoardModal = ({
       [name]: value,
     });
   };
+  useEffect(() => {
+    setupdateData({
+      cardHeading: data?.heading,
+      percent: data?.percent,
+    });
+  }, [data]);
   return (
     <Modal
       open={open}
@@ -78,6 +84,7 @@ const EditWellnessBoardModal = ({
               id="outlined-required"
               label="Card Heading"
               defaultValue={data?.heading}
+              value={updateData.cardHeading}
               type="string"
               name="cardHeading"
               fullWidth
@@ -87,6 +94,7 @@ const EditWellnessBoardModal = ({
             <TextField
               id="outlined-required"
               defaultValue={data?.percent}
+              value={updateData.percent}
               name="percent"
               size="small"
               fullWidth

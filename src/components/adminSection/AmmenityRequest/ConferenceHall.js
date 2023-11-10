@@ -13,18 +13,18 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import './style.css'
+import "./style.css";
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import AddHomeIcon from '@mui/icons-material/AddHome';
+import AddHomeIcon from "@mui/icons-material/AddHome";
 import dayjs from "dayjs";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { isLoading ,openSnackbar} from "../../../redux/action/defaultActions";
+import { isLoading, openSnackbar } from "../../../redux/action/defaultActions";
 
 // const AcceptAlert = React.forwardRef(function Alert(props, ref){
 //   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -39,7 +39,7 @@ const ConferenceHall = ({
   handleOpenModal,
   bookingRequest,
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   console.log(cardData);
   const navigate = useNavigate();
   const [accept, setAccept] = useState(false);
@@ -121,28 +121,27 @@ const ConferenceHall = ({
           spacing={1}
           sx={{
             justifyContent: "space-between",
-            display:"flex",
-            flexDirection:{
-              xs:"column",
-              sm:"row",
-              md:"row",
-            }
+            display: "flex",
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+              md: "row",
+            },
           }}
         >
           <Stack>
-          <List>
-            <ListItem disablePadding>
-              
-              <Typography
-                varient="h6"
-                component="body1"
-                sx={{ fontSize: "22px", fontWeight: "bold" }}
-              >
-                Booking Detail
-              </Typography>
-            </ListItem>
-          </List>
-        </Stack>
+            <List>
+              <ListItem disablePadding>
+                <Typography
+                  varient="h6"
+                  component="body1"
+                  sx={{ fontSize: "22px", fontWeight: "bold" }}
+                >
+                  Booking Detail
+                </Typography>
+              </ListItem>
+            </List>
+          </Stack>
           <Chip
             label={`${cardData?.bookingStatus.toUpperCase()}`}
             color={
@@ -155,12 +154,12 @@ const ConferenceHall = ({
             sx={{ color: "white" }}
           />
         </Stack>
-        <Stack sx={{mt:"5px"}}>
+        <Stack sx={{ mt: "5px" }}>
           <List>
             <ListItem disablePadding>
               <ListItemIcon sx={{}}>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }}>
                     {<AddHomeIcon />}
                   </Avatar>
                 </ListItemAvatar>
@@ -211,7 +210,7 @@ const ConferenceHall = ({
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray",width: 35, height: 35}} />
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }} />
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
@@ -258,12 +257,12 @@ const ConferenceHall = ({
             </ListItem>
           </List>
         </Stack>
-        <Stack >
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray",width: 35, height: 35}}>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }}>
                     {<CreditCardIcon />}
                   </Avatar>
                 </ListItemAvatar>
@@ -312,12 +311,14 @@ const ConferenceHall = ({
             </ListItem>
           </List>
         </Stack>
-        <Stack >
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray",width: 35, height: 35}}>{<PunchClockIcon />}</Avatar>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }}>
+                    {<PunchClockIcon />}
+                  </Avatar>
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
@@ -331,7 +332,7 @@ const ConferenceHall = ({
           </List>
         </Stack>
         <Stack
-           sx={{
+          sx={{
             display: "flex",
             justifyContent: "space-between",
             flexDirection: {
@@ -349,11 +350,32 @@ const ConferenceHall = ({
               xs: "auto",
             },
             padding: "10px",
-           
           }}
           className="custom-scrollbar"
         >
-          {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
+          {" "}
+          {cardData.bookedSlots.map((slots, id) => {
+            return (
+              <Typography
+                key={id}
+                sx={{
+                  textAlign: "center",
+                  bgcolor: "rgba(128, 224, 224, 0.9)",
+                  borderRadius: "5px",
+                  marginX: "10px",
+                  marginBottom: "20px",
+                  minWidth: "30%",
+                  padding: "5px",
+                  fontSize:"15px"
+                }}
+              >
+                {`${SlotStartTimeFormater(
+                  slots.startTime
+                )} - ${SlotEndTimeFormater(slots.endTime)}`}
+              </Typography>
+            );
+          })}
+          {/* {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
             return (
               <Typography
                 key={id}
@@ -371,27 +393,6 @@ const ConferenceHall = ({
                 (9AM - 10AM)
               </Typography>
             );
-          })}
-          {/* {cardData.bookedSlots.map((slots, id) => {
-            return slots._id && slots.startTime && slots.endTime ? (
-              <Typography
-                key={id}
-                sx={{
-                  textAlign: "center",
-                  bgcolor: "rgba(128, 224, 224, 0.9)",
-                  borderRadius: "5px",
-                  marginX: "15px",
-                  marginBottom: "20px",
-                  minWidth: "25%",
-                  padding: "10px",
-                }}
-              >
-                ({SlotStartTimeFormater(slots.startTime)} -{" "}
-                {SlotEndTimeFormater(slots.endTime)})
-              </Typography>
-            ) : (
-              "Not available"
-            );
           })} */}
         </Stack>
 
@@ -401,7 +402,7 @@ const ConferenceHall = ({
             flexDirection: "row",
             justifyContent: "center",
             marginTop: "15px",
-            marginBottom:"-10px"
+            marginBottom: "-10px",
           }}
         >
           <Button

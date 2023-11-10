@@ -11,11 +11,11 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import '../style.css'
+import "../style.css";
 import EventIcon from "@mui/icons-material/Event";
 import PunchClockIcon from "@mui/icons-material/PunchClock";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import AddHomeIcon from '@mui/icons-material/AddHome';
+import AddHomeIcon from "@mui/icons-material/AddHome";
 import dayjs from "dayjs";
 
 const AcceptConferenceHall = ({ cardData, index }) => {
@@ -55,32 +55,31 @@ const AcceptConferenceHall = ({ cardData, index }) => {
           borderRadius: "10px",
         }}
       >
-         <Stack
+        <Stack
           spacing={1}
           sx={{
             justifyContent: "space-between",
-            display:"flex",
-            flexDirection:{
-              xs:"column",
-              sm:"row",
-              md:"row",
-            }
+            display: "flex",
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+              md: "row",
+            },
           }}
         >
           <Stack>
-          <List>
-            <ListItem disablePadding>
-              
-              <Typography
-                varient="h6"
-                component="body1"
-                sx={{ fontSize: "22px", fontWeight: "bold" }}
-              >
-                Booking Detail
-              </Typography>
-            </ListItem>
-          </List>
-        </Stack>
+            <List>
+              <ListItem disablePadding>
+                <Typography
+                  varient="h6"
+                  component="body1"
+                  sx={{ fontSize: "22px", fontWeight: "bold" }}
+                >
+                  Booking Detail
+                </Typography>
+              </ListItem>
+            </List>
+          </Stack>
           <Chip
             label={`${cardData?.bookingStatus.toUpperCase()}`}
             color={
@@ -93,12 +92,12 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             sx={{ color: "white" }}
           />
         </Stack>
-        <Stack sx={{mt:"5px"}}>
+        <Stack sx={{ mt: "5px" }}>
           <List>
             <ListItem disablePadding>
               <ListItemIcon sx={{}}>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }}>
                     {<AddHomeIcon />}
                   </Avatar>
                 </ListItemAvatar>
@@ -145,24 +144,20 @@ const AcceptConferenceHall = ({ cardData, index }) => {
               />
             </ListItem>
           </List>
-          
         </Stack>
         <Stack sx={{ marginY: "5px" }}>
           <List>
             <ListItem disablePadding>
-              <ListItemText
-                primary='Booking Id'
-                secondary={cardData?._id}
-              />
+              <ListItemText primary="Booking Id" secondary={cardData?._id} />
             </ListItem>
           </List>
-          </Stack>
-        <Stack >
+        </Stack>
+        <Stack>
           <List>
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray",  width: 35, height: 35 }} />
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }} />
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
@@ -185,7 +180,6 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-        
           }}
         >
           <List>
@@ -215,7 +209,7 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }}>
                     {<CreditCardIcon />}
                   </Avatar>
                 </ListItemAvatar>
@@ -240,7 +234,6 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             },
             justifyContent: "space-between",
             flexWrap: "wrap",
-            
           }}
         >
           <List>
@@ -253,7 +246,10 @@ const AcceptConferenceHall = ({ cardData, index }) => {
           </List>
           <List>
             <ListItem disablePadding>
-              <ListItemText primary="GST" secondary={`${cardData.Amenity.GST} %`} />
+              <ListItemText
+                primary="GST"
+                secondary={`${cardData.Amenity.GST} %`}
+              />
             </ListItem>
           </List>
           <List>
@@ -267,7 +263,9 @@ const AcceptConferenceHall = ({ cardData, index }) => {
             <ListItem disablePadding>
               <ListItemIcon>
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35}}>{<PunchClockIcon />}</Avatar>
+                  <Avatar sx={{ bgcolor: "gray", width: 35, height: 35 }}>
+                    {<PunchClockIcon />}
+                  </Avatar>
                 </ListItemAvatar>
               </ListItemIcon>
               <Typography
@@ -281,7 +279,7 @@ const AcceptConferenceHall = ({ cardData, index }) => {
           </List>
         </Stack>
         <Stack
-           sx={{
+          sx={{
             display: "flex",
             justifyContent: "space-between",
             flexDirection: {
@@ -299,11 +297,9 @@ const AcceptConferenceHall = ({ cardData, index }) => {
               xs: "auto",
             },
             padding: "10px",
-           
           }}
           className="custom-scrollbar"
-
-         >
+        >
           {/* {[1, 2, 3, 4, 5, 6, 7].map((item, id) => {
             return (
               <Typography
@@ -324,24 +320,24 @@ const AcceptConferenceHall = ({ cardData, index }) => {
           })} */}
 
           {cardData.bookedSlots.map((slots, id) => {
-            return slots._id && slots.startTime && slots.endTime ? (
+            return (
               <Typography
                 key={id}
                 sx={{
                   textAlign: "center",
                   bgcolor: "rgba(128, 224, 224, 0.9)",
                   borderRadius: "5px",
-                  marginX: "15px",
+                  marginX: "10px",
                   marginBottom: "20px",
-                  minWidth: "25%",
-                  padding: "10px",
+                  minWidth: "30%",
+                  padding: "5px",
+                  fontSize: "15px",
                 }}
               >
-                ({SlotStartTimeFormater(slots.startTime)} -{" "}
-                {SlotEndTimeFormater(slots.endTime)})
+                {`${SlotStartTimeFormater(
+                  slots.startTime
+                )} - ${SlotEndTimeFormater(slots.endTime)}`}
               </Typography>
-            ) : (
-              "Not available"
             );
           })}
         </Stack>

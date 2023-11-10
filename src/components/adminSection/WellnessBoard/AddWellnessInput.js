@@ -39,7 +39,7 @@ const AddWellnessInput = () => {
     percent: "",
   });
   const [updateImage, setupdateImage] = useState(null);
-
+  console.log(updateData)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // const newValue = type === 'file' ? files[0] : value;
@@ -127,7 +127,7 @@ const AddWellnessInput = () => {
         `/api/v1/admin/update/wellness/board/data/${activeData._id}`,
         formdata
       );
-      // console.log(response);
+      console.log(response);
       if (response?.data.success === true) {
         wellnessData();
       }
